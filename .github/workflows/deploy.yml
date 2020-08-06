@@ -1,7 +1,6 @@
-name: masterDeploy
-
+name: Project deploy
 on:
-  push:
+  pull_request:
     branches:
       - master
 
