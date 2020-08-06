@@ -22,11 +22,15 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
-      - name: Set environment variable
-        with: # Set the secret as an input
-          super_secret: ${{ secrets.REACT_APP_APIKEY }}
-        
+      - name: Set environment variables
+        uses: allenevans/set-env@v1.0.0
+        with:
+          REACT_APP_APIKEY: ${{ secrets.REACT_APP_APIKEY }}
+      - name: Printenv
+        run: |
+          echo "REACT_APP_APIKEY=${REACT_APP_APIKEY}"
+          printenv
+          
       - run: yarn install --frozen-lockfile
       - run: yarn build
 
