@@ -30,12 +30,12 @@ const Navbar: React.FC = () => {
     const userId = useSelector((state: any) => state.data.auth.user.id)
     const challengeName = useSelector((state: any) => state.data.selectedChallenge.name)
 
-    const { data: globalScore } = useFetch<User[]>('http://localhost:4001/contests/global')
-    const { data: listOfUsers } = useFetch<UserApi[]>('http://localhost:4001/contests/user')
-    const { data: challengeScore } = useFetch<User[]>(`http://localhost:4001/contests/global/${challengeName}`)
-    const { data: userScore } = useFetch<User[]>(`http://localhost:4001/contests/${userId}/${challengeName}`)
+    const { data: globalScore } = useFetch<User[]>('https://code-contest-backend.herokuapp.com/contests/global')
+    const { data: listOfUsers } = useFetch<UserApi[]>('https://code-contest-backend.herokuapp.com/contests/user')
+    const { data: challengeScore } = useFetch<User[]>(`https://code-contest-backend.herokuapp.com/contests/global/${challengeName}`)
+    const { data: userScore } = useFetch<User[]>(`https://code-contest-backend.herokuapp.com/contests/${userId}/${challengeName}`)
     const { data: challengeIndex } = useFetch<Challenge>(`/contents/contests/${challengeName?.split(' ').join('_')}/index.md`)
-    const { data: challengeList } = useFetch<Challenge>(`http://localhost:4001/contests/list/${userId}`)
+    const { data: challengeList } = useFetch<Challenge>(`https://code-contest-backend.herokuapp.com/contests/list/${userId}`)
     useEffect(() => {
         const newData = { data: data }
 
