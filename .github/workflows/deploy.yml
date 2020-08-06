@@ -29,14 +29,14 @@ jobs:
       - name: Build project
         run: yarn build
         env:
-          REACT_APP_APIKEY: ${{ secrets.PERSONAL_TOKEN }}
+          REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           user_name: 'minecodebot'
           user_email: 'minecode.geral@gmail.com'
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          personal_token: ${{ secrets.LOGIN_TOKEN }}
           external_repository: minecode/code_contest
           publish_branch: master
           publish_dir: ./build
