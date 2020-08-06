@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
     const { data: listOfUsers } = useFetch<UserApi[]>('https://code-contest-backend.herokuapp.com/contests/user')
     const { data: challengeScore } = useFetch<User[]>(`https://code-contest-backend.herokuapp.com/contests/global/${challengeName}`)
     const { data: userScore } = useFetch<User[]>(`https://code-contest-backend.herokuapp.com/contests/${userId}/${challengeName}`)
-    const { data: challengeIndex } = useFetch<Challenge>(`/contents/contests/${challengeName?.split(' ').join('_')}/index.md`)
+    const { data: challengeIndex } = useFetch<Challenge>(`/contents/${challengeName?.split(' ').join('_')}/index.md`)
     const { data: challengeList } = useFetch<Challenge>(`https://code-contest-backend.herokuapp.com/contests/list/${userId}`)
     useEffect(() => {
         const newData = { data: data }
