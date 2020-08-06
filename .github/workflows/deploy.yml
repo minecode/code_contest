@@ -39,7 +39,7 @@ jobs:
         with:
           user_name: 'minecodebot'
           user_email: 'minecode.geral@gmail.com'
-          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
           external_repository: minecode/code_contest
           publish_branch: master
           publish_dir: ./build
