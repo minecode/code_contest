@@ -26,7 +26,7 @@ const Drop: React.FC = () => {
 
     const config = {
         headers: {
-            Authorization: `Basic ${window.btoa(process.env.REACT_APP_APIKEY || 'null')}`,
+            Authorization: `Basic ${(process.env.REACT_APP_APIKEY || 'null')}`,
             Accept: 'application/vnd.github.antiope-preview+json'
         }
     }
