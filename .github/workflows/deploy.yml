@@ -27,7 +27,7 @@ jobs:
       - run: yarn install --frozen-lockfile
 
       - name: Build project
-        env:
+        with:
           REACT_APP_APIKEY: ${{ secrets.PERSONAL_TOKEN }}
         run: yarn build
 
