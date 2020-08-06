@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const apiCodeContest = axios.create({
+const apiDatabase = axios.create({
     baseURL: 'https://code-contest-backend.herokuapp.com/contests'
 })
 
-export default apiCodeContest
+export default apiDatabase
