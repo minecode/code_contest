@@ -22,8 +22,12 @@ const ContestList: React.FC = () => {
     const [contestsActive, setContestsActive] = useState<string>('')
 
     const { data: dataTree } = useFetch<Contest>(
-        '/git/trees/bed6cd92797d728d25ec5b2ecca010f03196cbdb?recursive="true"'
+        '/git/trees/45a03b077a6c35310942f1f493a3a9c3f042f6c4?recursive="true"'
     )
+    console.log(dataTree?.tree.filter((elem) => {
+        return (elem.path.split('/').length === 2
+        )
+    }))
 
     const handleSelectChange = useCallback(
         (contest: string) => {
@@ -60,10 +64,8 @@ const ContestList: React.FC = () => {
             <div id="listOfContests">
                 {dataTree?.tree
           .filter((contest, i) => {
-              return (
-                  contest.path.split('/').length === 1 ||
-              (contest.path.split('/').length === 2 &&
-                contest.path.split('/')[1] !== 'requirements.txt')
+              return ( !contest.path.includes('.github') && (contest.path.split('/').length === 1 || (contest.path.split('/').length === 2 &&
+                contest.path.split('/')[1] !== 'requirements.txt'))
               )
           })
           .map((contest, i) => (
@@ -80,11 +82,10 @@ const ContestList: React.FC = () => {
                               contestName={contest.path}
                               size={
                                   dataTree.tree.filter((elem) => {
-                                      return (
-                                          elem.path.includes(contest.path) &&
-                          elem.path.split('/').length === 3
+                                      return (elem.path.includes(contest.path) &&
+                          elem.path.split('/').length === 2 && elem.path.split('/')[1] !== 'requirements.txt'
                                       )
-                                  }).length / 2
+                                  }).length
                               }
                           ></ContestButton>
                       </div>
