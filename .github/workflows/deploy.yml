@@ -1,0 +1,67 @@
+name: masterDeploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Set environment variables
+        uses: allenevans/set-env@v1.0.0
+        with:
+          REACT_APP_TOKEN: ${{ secrets.REACT_APP_TOKEN }}
+      - name: Printenv
+        run: |
+          echo "REACT_APP_TOKEN=${REACT_APP_TOKEN}"
+          printenv
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@master"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@master"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.semvers.outputs.major }}
+          release_name: Release ${{ steps.semvers.outputs.major }}
+          draft: false
+          prerelease: false
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          user_name: 'minecodebot'
+          user_email: 'minecode.geral@gmail.com'
+          personal_token: ${{ secrets.REACT_APP_TOKEN }}
+          external_repository: minecode/code_contest
+          publish_branch: master
+          publish_dir: ./build
