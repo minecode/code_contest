@@ -1,0 +1,51 @@
+name: Project Tests
+on:
+  push:
+    branches: master
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Get commit message
+        run: |
+           echo ::set-env name=commitmsg::$(git log --format=%B -n 1 ${{ github.event.after }})
+      
+      - name: show commit message
+        run : echo $commitmsg
+      
+      - name: Split commit message
+        uses: rishabhgupta/split-by@v1
+        id: split
+        with:
+          string: ${{env.commitmsg}}
+          split-by: '/'
+          
+      - name: Copy test file
+        uses: canastro/copy-file-action@master
+        with:
+          source: "./contests/${{steps.split.outputs._0}}/${{steps.split.outputs._1}}/resolution_test.py"
+          target: "./contests/${{env.commitmsg}}/resolution_test.py"
+      
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+          
+      - name: Install dependencies
+        working-directory: ./contests/${{steps.split.outputs._0}}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Test with pytest
+        working-directory: ./contests/${{env.commitmsg}}
+        run: pytest -vv
+
+      - name: Update database
+        uses: satak/webrequest-action@master
+        with:
+          url: http://localhost:4001/contests/post/${{env.commitmsg}}/100
+          method: POST
