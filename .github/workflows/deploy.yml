@@ -25,10 +25,10 @@ jobs:
       - name: Set environment variables
         uses: allenevans/set-env@v1.0.0
         with:
-          REACT_APP_TOKEN: ${{ secrets.REACT_APP_TOKEN }}
+          REACT_APP_APIKEY: ${{ secrets.REACT_APP_APIKEY }}
       - name: Printenv
         run: |
-          echo "REACT_APP_TOKEN=${REACT_APP_TOKEN}"
+          echo "REACT_APP_APIKEY=${REACT_APP_APIKEY}"
           printenv
       - run: yarn install --frozen-lockfile
       - run: yarn build
@@ -38,7 +38,7 @@ jobs:
         with:
           user_name: 'minecodebot'
           user_email: 'minecode.geral@gmail.com'
-          personal_token: ${{ secrets.REACT_APP_TOKEN }}
+          personal_token: ${{ secrets.REACT_APP_APIKEY }}
           external_repository: minecode/code_contest
           publish_branch: master
           publish_dir: ./build
