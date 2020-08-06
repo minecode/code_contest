@@ -24,10 +24,6 @@ const ContestList: React.FC = () => {
     const { data: dataTree } = useFetch<Contest>(
         '/git/trees/45a03b077a6c35310942f1f493a3a9c3f042f6c4?recursive="true"'
     )
-    console.log(dataTree?.tree.filter((elem) => {
-        return (elem.path.split('/').length === 2
-        )
-    }))
 
     const handleSelectChange = useCallback(
         (contest: string) => {
