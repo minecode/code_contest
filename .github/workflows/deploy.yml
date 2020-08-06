@@ -26,9 +26,7 @@ jobs:
       - name: Set environment variable
         with: # Set the secret as an input
           super_secret: ${{ secrets.REACT_APP_APIKEY }}
-        env: # Or as an environment variable
-          super_secret: ${{ secrets.REACT_APP_APIKEY }}
-      
+        
       - run: yarn install --frozen-lockfile
       - run: yarn build
 
