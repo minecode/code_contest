@@ -10,9 +10,8 @@ import {
 
 import base64 from 'base-64'
 import ReactMarkdown from 'react-markdown'
-import { titleCase } from '../Utils'
+import { titleCase, Data } from '../Utils'
 import { useSelector } from 'react-redux'
-import { Data } from '../Utils'
 
 export interface Props {
     challengeName?: string;

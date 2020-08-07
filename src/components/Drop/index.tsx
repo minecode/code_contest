@@ -8,10 +8,10 @@ import apiCodeContest from '../../services/apiCodeContest'
 import { Modal, Spinner, Col, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/theme-dracula";
+import "ace-builds/src-noconflict/mode-python"
+import "ace-builds/src-noconflict/theme-dracula"
 
-import { Data } from '../Utils'  
+import { Data } from '../Utils'
 interface BodyRequest {
     [key: string]: any
 }
@@ -85,7 +85,7 @@ const Drop: React.FC = () => {
     const submitCode = async () => {
         setSolution('')
         setInProgress(true)
-        await apiCodeContest.put(`/contents/${challengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, bodyRequest, config)           
+        await apiCodeContest.put(`/contents/${challengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, bodyRequest, config)
     }
 
     const onChange = async (newValue: string) => {
@@ -109,7 +109,6 @@ const Drop: React.FC = () => {
       }
 
     const uploadRepoCode = async () => {
-
         try {
             const getCodeSended = await apiCodeContest.get(`/contents/${challengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, config)
             const bodyRequest: BodyRequest = {
@@ -132,7 +131,6 @@ const Drop: React.FC = () => {
             }
             setBodyRequest(bodyRequest)
         }
-
     }
 
     useEffect(() => {
@@ -154,7 +152,7 @@ const Drop: React.FC = () => {
                     }) => {
                         return (
                             <DropFiles>
-                                {challengeName && bodyRequest ? 
+                                {challengeName && bodyRequest ?
                                     <Editor debounceChangePeriod={1000}
                                         mode="python"
                                         theme="dracula"
@@ -173,9 +171,9 @@ const Drop: React.FC = () => {
                                             showLineNumbers: true,
                                             tabSize: 2,
                                         }}
-                                  /> : <></>}
-                                    {bodyRequest ? <SubmitButton onClick={() => { submitCode(); handleShow() }}>Submit code</SubmitButton> : <></> }
-                                    <h2>or</h2>
+                                    /> : <></>}
+                                    {bodyRequest ? <SubmitButton onClick={() => { submitCode(); handleShow() }}>Submit code</SubmitButton> : <></>}
+                                <h2>or</h2>
                                 <DropFilesZone {...getRootProps()}>
                                     <input {...getInputProps()} />
                                     <span>{isDragActive ? '📂' : '📁'}</span>

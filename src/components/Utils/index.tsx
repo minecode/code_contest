@@ -58,6 +58,9 @@ export interface User {
     userId?: string;
     user: UserApi;
     score: number;
+    firstName?: string;
+    lastName?: string;
+    imageUrl?: string;
 }
 
 export interface UserApi {
