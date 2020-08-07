@@ -1,9 +1,8 @@
 import React from 'react'
-import { titleCase } from '../Utils'
+import { titleCase, Data, Challenge } from '../Utils'
 
 import { Container, ContestIcon } from './styles'
 import { useSelector } from 'react-redux'
-import { Data, Challenge } from '../Utils'
 
 export interface Props {
     contestName: string

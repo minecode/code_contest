@@ -6,7 +6,16 @@ import { Container, Role, User as UserElem, Avatar } from './styles'
 
 import { User, UserApi, Data } from '../Utils'
 
-const UserRow: React.FC<User> = ({ user, score }) => {
+export interface Props {
+    user: {
+        firstName: string;
+        lastName: string;
+        imageUrl: string;
+    }
+    score: number
+}
+
+const UserRow: React.FC<Props> = ({ user, score }) => {
     return (
         <UserElem>
             <Avatar src={base64.decode(user.imageUrl)} />

@@ -53,10 +53,8 @@ const ContestList: React.FC = () => {
             </Category>
             <div id="listOfContests">
                 {dataTree?.tree
-          .filter((contest: Challenge, i: number) => {
-              return ( !contest.path.includes('.github') && (contest.path.split('/').length === 1 || (contest.path.split('/').length === 2 &&
-                contest.path.split('/')[1] !== 'requirements.txt'))
-              )
+          .filter((contest: Challenge) => {
+              return (!contest.path.includes('.github') && (contest.path.split('/').length === 1 || (contest.path.split('/').length === 2 && contest.path.split('/')[1] !== 'requirements.txt')))
           })
           .map((contest: Challenge, i: number) => (
               <div key={i}>

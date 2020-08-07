@@ -8,8 +8,8 @@ import apiCodeContest from '../../services/apiCodeContest'
 import { Modal, Spinner, Col, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-import "ace-builds/src-noconflict/mode-python"
-import "ace-builds/src-noconflict/theme-dracula"
+import 'ace-builds/src-noconflict/mode-python'
+import 'ace-builds/src-noconflict/theme-dracula'
 
 import { Data } from '../Utils'
 interface BodyRequest {
@@ -105,8 +105,7 @@ const Drop: React.FC = () => {
             console.log(error)
         }
         setBodyRequest(bodyRequest)
-
-      }
+    }
 
     const uploadRepoCode = async () => {
         try {
@@ -154,10 +153,10 @@ const Drop: React.FC = () => {
                             <DropFiles>
                                 {challengeName && bodyRequest ?
                                     <Editor debounceChangePeriod={1000}
-                                        mode="python"
-                                        theme="dracula"
+                                        mode='python'
+                                        theme='dracula'
                                         onChange={onChange}
-                                        name="codeeditor1"
+                                        name='codeeditor1'
                                         fontSize={18}
                                         showPrintMargin={true}
                                         showGutter={true}
@@ -169,10 +168,10 @@ const Drop: React.FC = () => {
                                             enableLiveAutocompletion: false,
                                             enableSnippets: false,
                                             showLineNumbers: true,
-                                            tabSize: 2,
+                                            tabSize: 2
                                         }}
                                     /> : <></>}
-                                    {bodyRequest ? <SubmitButton onClick={() => { submitCode(); handleShow() }}>Submit code</SubmitButton> : <></>}
+                                {bodyRequest ? <SubmitButton onClick={() => { submitCode(); handleShow() }}>Submit code</SubmitButton> : <></>}
                                 <h2>or</h2>
                                 <DropFilesZone {...getRootProps()}>
                                     <input {...getInputProps()} />
@@ -185,7 +184,7 @@ const Drop: React.FC = () => {
                                 {inProgress ? <Modal
                                     show={show}
                                     onHide={handleClose}
-                                    backdrop="static"
+                                    backdrop='static'
                                 >
                                     <Modal.Header closeButton>
                                         <Modal.Title>Test in progress...</Modal.Title>
@@ -193,10 +192,10 @@ const Drop: React.FC = () => {
                                     <Modal.Body>
                                         <Container>
                                             <Row>
-                                                <Col xs={12} className="text-center">
-                                                    <Spinner animation="border" />
+                                                <Col xs={12} className='text-center'>
+                                                    <Spinner animation='border' />
                                                 </Col>
-                                                <Col xs={12} className="text-center">
+                                                <Col xs={12} className='text-center'>
                                                     <p>We are testing your solution... Soon as possibel, your pontuation will be upadated!!</p>
                                                 </Col>
                                             </Row>
