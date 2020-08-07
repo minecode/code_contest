@@ -23,12 +23,14 @@ const Navbar: React.FC = () => {
     useEffect(() => {
         const newData = { data: data }
 
-        globalScore ? newData.data.globalScore = globalScore : 
-        listOfUsers ? newData.data.listOfUsers = listOfUsers : 
-        challengeScore ? newData.data.challengeScore = challengeScore : 
-        userScore ? newData.data.userScore = userScore : 
-        challengeIndex ? newData.data.challengeIndex = challengeIndex : 
-        challengeList ? newData.data.challengeList = challengeList : 
+        if (globalScore && listOfUsers && challengeScore && userScore && challengeIndex && challengeList) {
+            newData.data.globalScore = globalScore
+            newData.data.listOfUsers = listOfUsers
+            newData.data.challengeScore = challengeScore
+            newData.data.userScore = userScore
+            newData.data.challengeIndex = challengeIndex
+            newData.data.challengeList = challengeList
+        }
 
         dispatch({ type: 'CHALLENGE', data: newData })
     }, [globalScore, listOfUsers, challengeScore, userScore, challengeIndex, challengeList, dispatch, data])
