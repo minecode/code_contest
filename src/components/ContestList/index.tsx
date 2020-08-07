@@ -59,12 +59,12 @@ const ContestList: React.FC = () => {
             </Category>
             <div id="listOfContests">
                 {dataTree?.tree
-          .filter((contest, i) => {
+          .filter((contest: any, i: number) => {
               return ( !contest.path.includes('.github') && (contest.path.split('/').length === 1 || (contest.path.split('/').length === 2 &&
                 contest.path.split('/')[1] !== 'requirements.txt'))
               )
           })
-          .map((contest, i) => (
+          .map((contest: any, i: number) => (
               <div key={i}>
                   {contest.path.split('/').length === 1 ? (
                       <div
@@ -77,7 +77,7 @@ const ContestList: React.FC = () => {
                           <ContestButton
                               contestName={contest.path}
                               size={
-                                  dataTree.tree.filter((elem) => {
+                                  dataTree.tree.filter((elem:Challenge) => {
                                       return (elem.path.includes(contest.path) &&
                           elem.path.split('/').length === 2 && elem.path.split('/')[1] !== 'requirements.txt'
                                       )
