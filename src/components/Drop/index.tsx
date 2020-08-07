@@ -80,7 +80,7 @@ const Drop: React.FC = () => {
 
     return (
         <Container>
-            {challengeName
+            {challengeName && challengeName.split('/')[1].length > 0
                 ? <Dropzone
                     onDrop={handleDrop}
                 >
