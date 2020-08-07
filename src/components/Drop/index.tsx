@@ -143,6 +143,7 @@ const Drop: React.FC = () => {
 
     useEffect(() => {
         uploadRepoCode()
+    // eslint-disable-next-line
     }, [challengeName])
 
     return (
