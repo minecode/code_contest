@@ -1,12 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import { Container, DropFiles, SubmitButton, DropFilesZone } from './styles'
+import base64 from 'base-64'
+import { Container, DropFiles, SubmitButton, DropFilesZone, Editor } from './styles'
 import Dropzone from 'react-dropzone'
 import apiCodeContest from '../../services/apiCodeContest'
 
 import { Modal, Spinner, Col, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/theme-dracula";
+
+
+
+interface Code {
+    name?: string;
+    content?: string;
+  }
+  
 interface BodyRequest {
     [key: string]: any
 }
@@ -20,7 +31,6 @@ const Drop: React.FC = () => {
     const [bodyRequest, setBodyRequest] = useState <BodyRequest | null >(null)
     const challengeName = useSelector((state: any) => state.data.selectedChallenge.name)
     const dataAuth = useSelector((state: any) => state.data.auth)
-
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
@@ -72,11 +82,68 @@ const Drop: React.FC = () => {
         }))
     }
 
-    const submitFile = async (bodyRequest: BodyRequest) => {
+    const submitFile = async () => {
         setSolution('')
         setInProgress(true)
         await apiCodeContest.put(`/contents/${challengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, bodyRequest, config)
     }
+
+    const submitCode = async () => {
+        setSolution('')
+        setInProgress(true)
+        await apiCodeContest.put(`/contents/${challengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, bodyRequest, config)           
+    }
+
+    const onChange = async (newValue: string) => {
+        const bodyRequest: BodyRequest = {
+            message: `${challengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
+            committer: {
+                name: 'minecodebot',
+                email: 'minecode.geral@gmail.com'
+            },
+            content: `${base64.encode(newValue)}`
+        }
+
+        try {
+            const fileAlreadyExist = await apiCodeContest.get(`/contents/${challengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, config)
+            bodyRequest.sha = `${fileAlreadyExist.data.sha}`
+        } catch (error) {
+            console.log(error)
+        }
+        setBodyRequest(bodyRequest)
+
+      }
+
+    const uploadRepoCode = async () => {
+
+        try {
+            const getCodeSended = await apiCodeContest.get(`/contents/${challengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, config)
+            const bodyRequest: BodyRequest = {
+                message: `${challengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
+                committer: {
+                    name: 'minecodebot',
+                    email: 'minecode.geral@gmail.com'
+                },
+                content: `${getCodeSended.data.content}`
+            }
+            setBodyRequest(bodyRequest)
+        } catch {
+            const bodyRequest: BodyRequest = {
+                message: `${challengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
+                committer: {
+                    name: 'minecodebot',
+                    email: 'minecode.geral@gmail.com'
+                },
+                content: `${base64.encode('# Place your code here')}`
+            }
+            setBodyRequest(bodyRequest)
+        }
+
+    }
+
+    useEffect(() => {
+        uploadRepoCode()
+    }, [challengeName])
 
     return (
         <Container>
@@ -92,6 +159,28 @@ const Drop: React.FC = () => {
                     }) => {
                         return (
                             <DropFiles>
+                                {challengeName && bodyRequest ? 
+                                    <Editor debounceChangePeriod={100}
+                                    mode="python"
+                                    theme="dracula"
+                                    onChange={onChange}
+                                    name="codeeditor1"
+                                    fontSize={18}
+                                    showPrintMargin={true}
+                                    showGutter={true}
+                                    highlightActiveLine={true}
+                                    editorProps={{ $blockScrolling: true }}
+                                    value={base64.decode(bodyRequest.content)}
+                                    setOptions={{
+                                        enableBasicAutocompletion: false,
+                                        enableLiveAutocompletion: false,
+                                        enableSnippets: false,
+                                        showLineNumbers: true,
+                                        tabSize: 2,
+                                    }}
+                                  /> : <></>}
+                                    {bodyRequest ? <SubmitButton onClick={() => { submitCode(); handleShow() }}>Submit code</SubmitButton> : <></> }
+                                    <h2>or</h2>
                                 <DropFilesZone {...getRootProps()}>
                                     <input {...getInputProps()} />
                                     <span>{isDragActive ? '📂' : '📁'}</span>
@@ -121,7 +210,7 @@ const Drop: React.FC = () => {
                                         </Container>
                                     </Modal.Body>
                                 </Modal>
-                                    : bodyRequest && !sendedFile ? <SubmitButton onClick={() => { submitFile(bodyRequest); handleShow() }}>Submit</SubmitButton> : sendedFile && solution ? <p>{solution}</p> : <></>}
+                                    : bodyRequest && !sendedFile && fileName.length > 0 ? <SubmitButton onClick={() => { submitFile(); handleShow() }}>Submit file</SubmitButton> : sendedFile && solution ? <p>{solution}</p> : <></>}
                             </DropFiles>
                         )
                     }}

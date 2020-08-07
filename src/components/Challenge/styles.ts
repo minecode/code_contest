@@ -8,19 +8,20 @@ export const Container = styled.div`
   justify-content: space-between;
 
   background-color: var(--primary);
-  max-height: calc(100vh - 46px)
+  max-height: calc(100vh - 46px);
+  overflow-y: scroll;
 `
 
 export const Grid = styled.div`
   display: grid;
 
-  grid-template-columns: 311px auto;
-  grid-template-rows: 46px auto 150px;
+  grid-template-columns: auto;
+  grid-template-rows: 46px auto auto;
 
   grid-template-areas:
-    'CL CI'
-    'CL CD'
-    'CL DF';
+    'CI'
+    'CD'
+    'DF';
 
   height: 100vh;
 `

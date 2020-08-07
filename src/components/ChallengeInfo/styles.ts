@@ -18,8 +18,8 @@ export const Info = styled.div`
   display: flex;
   flex-direction: column;
 
-  max-height: calc(100vh - 250px - 46px);
-  overflow-y: scroll;
+  /* max-height: calc(100vh - 250px - 46px); */
+  /* overflow-y: scroll; */
 
   color: var(--white);
 
