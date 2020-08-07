@@ -1,3 +1,6 @@
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8a274db0330c48e98114d069a98c735e)](https://app.codacy.com/gh/minecode/code_contest_frontend?utm_source=github.com&utm_medium=referral&utm_content=minecode/code_contest_frontend&utm_campaign=Badge_Grade_Dashboard)
+
 Create a minecode website with some challenges where someone can participate and submit one resolution.
 Add possibility to make contestes and teams.
 Login with google.
