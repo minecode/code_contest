@@ -2,36 +2,25 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import base64 from 'base-64'
 
-import { Container, Role, User, Avatar } from './styles'
+import { Container, Role, User as UserElem, Avatar } from './styles'
 
-interface User {
-    userId?: string;
-    user: UserApi;
-    score: number;
-}
-
-interface UserApi {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    imageUrl: string;
-}
+import { User, UserApi, Data } from '../Utils'
 
 const UserRow: React.FC<User> = ({ user, score }) => {
     return (
-        <User>
+        <UserElem>
             <Avatar src={base64.decode(user.imageUrl)} />
             <strong>{user.firstName} {user.lastName}</strong>
             <span>{score}</span>
-        </User>
+        </UserElem>
     )
 }
 
 const UserList: React.FC = () => {
-    const challengeName: string = useSelector((state: any) => state.data.selectedChallenge.name)
-    const globalScore: User[] = useSelector((state: any) => state.data.globalScore)
-    const listOfUsers: UserApi[] = useSelector((state: any) => state.data.listOfUsers)
-    const challengeScore: User[] = useSelector((state: any) => state.data.challengeScore)
+    const challengeName: string = useSelector((state: Data) => state.data.selectedChallenge.name)
+    const globalScore: User[] = useSelector((state: Data) => state.data.globalScore)
+    const listOfUsers: UserApi[] = useSelector((state: Data) => state.data.listOfUsers)
+    const challengeScore: User[] = useSelector((state: Data) => state.data.challengeScore)
 
     return (
         <Container>

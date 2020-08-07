@@ -4,13 +4,13 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import { useDispatch, useSelector } from 'react-redux'
 import base64 from 'base-64'
 import apiDatabase from '../../services/apiDatabase'
-
+import { Data } from '../Utils'
 import { Auth, BtnGoogle } from './styles'
 
 const Authentication: React.FC = () => {
-    const data = useSelector((state: any) => state.data)
+    const data = useSelector((state: Data) => state.data)
     const authentication = useSelector(
-        (state: any) => state.data.auth.authenticated
+        (state: Data) => state.data.auth.authenticated
     )
 
     const dispatch = useDispatch()
@@ -35,7 +35,7 @@ const Authentication: React.FC = () => {
         dispatch({ type: 'LOGIN', data: newData })
     }
 
-    const badResponseGoogle = (response: any) => {
+    const badResponseGoogle = (response: string) => {
         console.log(response)
         dispatch({ type: 'BAD_RESPONSE', data: null })
     }
@@ -45,12 +45,12 @@ const Authentication: React.FC = () => {
         newData.data.auth = {
             authenticated: false,
             user: {
-                id: null,
-                name: null,
-                surname: null,
-                image: null
+                id: '',
+                name: '',
+                surname: '',
+                image: ''
             },
-            token: null
+            token: ''
         }
         dispatch({ type: 'LOGOUT', data: newData })
     }

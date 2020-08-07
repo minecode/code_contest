@@ -12,14 +12,15 @@ import base64 from 'base-64'
 import ReactMarkdown from 'react-markdown'
 import { titleCase } from '../Utils'
 import { useSelector } from 'react-redux'
+import { Data } from '../Utils'
 
 export interface Props {
     challengeName?: string;
 }
 
 const ChallengeInfo: React.FC = () => {
-    const challengeName = useSelector((state: any) => state.data.selectedChallenge.name)
-    const challengeIndex = useSelector((state: any) => state.data.challengeIndex)
+    const challengeName = useSelector((state: Data) => state.data.selectedChallenge.name)
+    const challengeIndex = useSelector((state: Data) => state.data.challengeIndex)
     return (
         <>
             <ContainerInfo>

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import AceEditor from "react-ace";
+import AceEditor from "react-ace"
 
 export const Container = styled.div`
   grid-area: DF;

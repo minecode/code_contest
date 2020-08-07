@@ -7,17 +7,11 @@ import ContestButton from '../ContestButton'
 import { useFetch } from 'src/hooks/useFetch'
 import { useSelector, useDispatch } from 'react-redux'
 
-interface Contest {
-    tree: Challenge[];
-}
-
-interface Challenge {
-    path: string;
-}
+import { Challenge, Contest, Data } from '../Utils'
 
 const ContestList: React.FC = () => {
     const dispatch = useDispatch()
-    const data = useSelector((state: any) => state.data)
+    const data = useSelector((state: Data) => state.data)
 
     const [contestsActive, setContestsActive] = useState<string>('')
 
@@ -36,11 +30,11 @@ const ContestList: React.FC = () => {
         [dispatch, data]
     )
 
-    const handleVisibleContest = (contest: any) => {
+    const handleVisibleContest = (contest: string) => {
         if (contestsActive === contest) {
             setContestsActive('')
             const newData = { data: data }
-            newData.data.selectedChallenge = { name: null }
+            newData.data.selectedChallenge = { name: '' }
 
             dispatch({ type: 'CHALLENGE', data: newData })
         } else {
@@ -59,12 +53,12 @@ const ContestList: React.FC = () => {
             </Category>
             <div id="listOfContests">
                 {dataTree?.tree
-          .filter((contest: any, i: number) => {
+          .filter((contest: Challenge, i: number) => {
               return ( !contest.path.includes('.github') && (contest.path.split('/').length === 1 || (contest.path.split('/').length === 2 &&
                 contest.path.split('/')[1] !== 'requirements.txt'))
               )
           })
-          .map((contest: any, i: number) => (
+          .map((contest: Challenge, i: number) => (
               <div key={i}>
                   {contest.path.split('/').length === 1 ? (
                       <div

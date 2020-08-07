@@ -3,24 +3,17 @@ import { titleCase } from '../Utils'
 
 import { Container, HashtagIcon, CheckIcon } from './styles'
 import { useSelector } from 'react-redux'
-
+import { Data, Challenge } from '../Utils'
 export interface Props {
     challengeName: string;
-}
-export interface Challenge {
-    id: string;
-    userId: string;
-    contestId: string;
-    challengeId: string;
-    score: number;
 }
 
 const ChallengeButton: React.FC<Props> = ({ challengeName }) => {
     const selectedChallengeName = useSelector(
-        (state: any) => state.data.selectedChallenge.name
+        (state: Data) => state.data.selectedChallenge.name
     )
     const challengeList: Challenge[] = useSelector(
-        (state: any) => state.data.challengeList
+        (state: Data) => state.data.challengeList
     )
 
     return (

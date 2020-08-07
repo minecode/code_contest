@@ -11,11 +11,12 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { GoogleLogin } from 'react-google-login'
 import { BtnGoogle } from '../Authentication/styles'
+import { Data } from '../Utils'
 
 const Challenge: React.FC = () => {
-    const data = useSelector((state: any) => state.data)
-    const authentication = useSelector((state: any) => state.data.auth.authenticated)
-    const challengeName = useSelector((state: any) => state.data.selectedChallenge.name)
+    const data = useSelector((state: Data) => state.data)
+    const authentication = useSelector((state: Data) => state.data.auth.authenticated)
+    const challengeName = useSelector((state: Data) => state.data.selectedChallenge.name)
 
     const dispatch = useDispatch()
 
@@ -36,7 +37,7 @@ const Challenge: React.FC = () => {
         dispatch({ type: 'LOGIN', data: newData })
     }
 
-    const badResponseGoogle = (response: any) => {
+    const badResponseGoogle = (response: string) => {
         console.log(response)
         dispatch({ type: 'BAD_RESPONSE', data: null })
     }

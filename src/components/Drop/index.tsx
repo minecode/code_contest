@@ -11,13 +11,7 @@ import { useSelector } from 'react-redux'
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-dracula";
 
-
-
-interface Code {
-    name?: string;
-    content?: string;
-  }
-  
+import { Data } from '../Utils'  
 interface BodyRequest {
     [key: string]: any
 }
@@ -29,8 +23,8 @@ const Drop: React.FC = () => {
     const [show, setShow] = useState(false)
     const [currentChallengeName, setCurrentChallengeName] = useState<string>('challenge')
     const [bodyRequest, setBodyRequest] = useState <BodyRequest | null >(null)
-    const challengeName = useSelector((state: any) => state.data.selectedChallenge.name)
-    const dataAuth = useSelector((state: any) => state.data.auth)
+    const challengeName = useSelector((state: Data) => state.data.selectedChallenge.name)
+    const dataAuth = useSelector((state: Data) => state.data.auth)
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
@@ -162,23 +156,23 @@ const Drop: React.FC = () => {
                             <DropFiles>
                                 {challengeName && bodyRequest ? 
                                     <Editor debounceChangePeriod={1000}
-                                    mode="python"
-                                    theme="dracula"
-                                    onChange={onChange}
-                                    name="codeeditor1"
-                                    fontSize={18}
-                                    showPrintMargin={true}
-                                    showGutter={true}
-                                    highlightActiveLine={true}
-                                    editorProps={{ $blockScrolling: true }}
-                                    value={base64.decode(bodyRequest.content)}
-                                    setOptions={{
-                                        enableBasicAutocompletion: false,
-                                        enableLiveAutocompletion: false,
-                                        enableSnippets: false,
-                                        showLineNumbers: true,
-                                        tabSize: 2,
-                                    }}
+                                        mode="python"
+                                        theme="dracula"
+                                        onChange={onChange}
+                                        name="codeeditor1"
+                                        fontSize={18}
+                                        showPrintMargin={true}
+                                        showGutter={true}
+                                        highlightActiveLine={true}
+                                        editorProps={{ $blockScrolling: true }}
+                                        value={base64.decode(bodyRequest.content)}
+                                        setOptions={{
+                                            enableBasicAutocompletion: false,
+                                            enableLiveAutocompletion: false,
+                                            enableSnippets: false,
+                                            showLineNumbers: true,
+                                            tabSize: 2,
+                                        }}
                                   /> : <></>}
                                     {bodyRequest ? <SubmitButton onClick={() => { submitCode(); handleShow() }}>Submit code</SubmitButton> : <></> }
                                     <h2>or</h2>

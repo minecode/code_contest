@@ -3,24 +3,18 @@ import { titleCase } from '../Utils'
 
 import { Container, ContestIcon } from './styles'
 import { useSelector } from 'react-redux'
+import { Data, Challenge } from '../Utils'
 
 export interface Props {
     contestName: string
     size: number
 }
 
-export interface Challenge {
-    id: string,
-    userId: string,
-    contestId: string,
-    challengeId: string,
-    score: number
-}
 const ContestButton: React.FC<Props> = ({ contestName, size }) => {
-    const dataAuth = useSelector((state: any) => state.data.auth)
-    const selectedChallengeName = useSelector((state: any) => state.data.selectedChallenge.name)
-    const userScore = useSelector((state: any) => state.data.userScore)
-    const challengeList: Challenge[] = useSelector((state: any) => state.data.challengeList)
+    const dataAuth = useSelector((state: Data) => state.data.auth)
+    const selectedChallengeName = useSelector((state: Data) => state.data.selectedChallenge.name)
+    const userScore = useSelector((state: Data) => state.data.userScore)
+    const challengeList: Challenge[] = useSelector((state: Data) => state.data.challengeList)
 
     return (
         <Container className={selectedChallengeName && contestName.split('/')[0] === selectedChallengeName.split('/')[0].split(' ').join('_') ? 'active' : ''}>
