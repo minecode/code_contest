@@ -161,7 +161,7 @@ const Drop: React.FC = () => {
                         return (
                             <DropFiles>
                                 {challengeName && bodyRequest ? 
-                                    <Editor debounceChangePeriod={100}
+                                    <Editor debounceChangePeriod={1000}
                                     mode="python"
                                     theme="dracula"
                                     onChange={onChange}
