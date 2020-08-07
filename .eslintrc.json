@@ -9,10 +9,6 @@
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended"
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
@@ -32,5 +28,22 @@
     ],
     "rules": {
         "indent": ["error", 4]
-    }
+    },
+    "import/order": [
+        "error",
+        {
+            "groups": ["builtin", "external", "internal"],
+            "pathGroups": [{
+                "pattern": "react",
+                "group": "external",
+                "position": "before"
+            }],
+            "pathGroupsExcludedImportTypes": ["react"],
+            "newlines-between": "always",
+            "alphabetize": {
+                "order": "asc",
+                "caseInsensitive": true
+            }
+        }
+    ]
 }

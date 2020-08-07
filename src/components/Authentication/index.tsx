@@ -36,7 +36,6 @@ const Authentication: React.FC = () => {
     }
 
     const badResponseGoogle = (response: string) => {
-        console.log(response)
         dispatch({ type: 'BAD_RESPONSE', data: null })
     }
 

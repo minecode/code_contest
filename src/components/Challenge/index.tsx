@@ -4,7 +4,6 @@ import { Container, Grid, LoginInfo, Message } from './styles'
 import { Col, Row } from 'react-bootstrap'
 
 import ChallengeInfo from '../ChallengeInfo'
-// import ContestList from '../ContestList'
 
 import Drop from '../Drop'
 import { useSelector, useDispatch } from 'react-redux'
@@ -38,14 +37,12 @@ const Challenge: React.FC = () => {
     }
 
     const badResponseGoogle = (response: string) => {
-        console.log(response)
         dispatch({ type: 'BAD_RESPONSE', data: null })
     }
 
     return (
         <Container>
             <Grid>
-                {/* <ContestList /> */}
                 {challengeName ? (
                     <>
                         <ChallengeInfo />
