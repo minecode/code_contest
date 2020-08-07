@@ -18,4 +18,5 @@ export const BtnGoogle = styled.button`
     &:hover {
         background: var(--discord)
     }
+    
 `
