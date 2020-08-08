@@ -2,7 +2,7 @@ import React from 'react'
 import base64 from 'base-64'
 import apiDatabase from '../../services/apiDatabase'
 import { Data } from '../Interface'
-import { Auth, BtnGoogle } from './styles'
+import { Auth, BtnGoogle, LogoutIcon, LoginIcon } from './styles'
 import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -53,7 +53,8 @@ const Authentication: React.FC = () => {
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
                         >
-                            Logout
+                            <span>Logout </span>
+                            <LogoutIcon />
                         </BtnGoogle>
                     )}
                 ></GoogleLogout>
@@ -69,7 +70,8 @@ const Authentication: React.FC = () => {
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
                         >
-                            Sign In w/ Google
+                            <span>Login w/ Google </span>
+                            <LoginIcon />
                         </BtnGoogle>
                     )}
                 />

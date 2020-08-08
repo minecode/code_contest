@@ -21,11 +21,27 @@ export const Container = styled.div`
         text-overflow: ellipsis;
         overflow: hidden;
     }
+    > div > span {
+        display: none
+    }
+    > div svg {
+        display: none
+    }
+    @media (min-width: 667px) {
+        > div svg {
+            display: initial
+        }
+        > div > span {
+            display: initial
+        }
+    }
     &:hover,
     &.active {
-        background-color: var(--quinary);
         > div span {
             color: var(--white);
+        }
+        @media (min-width: 667px) {
+            background-color: var(--quinary);
         }
     }
 `
