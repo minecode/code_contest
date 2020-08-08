@@ -1,26 +1,23 @@
 import React from 'react'
-import { titleCase, Data, Challenge } from '../Utils'
-
-import { Container, HashtagIcon, CheckIcon } from './styles'
+import { titleCase } from '../Utils'
+import { Data } from '../Interface'
+import { Container, HashtagIcon, CheckIcon, Challenge } from './styles'
 import { useSelector } from 'react-redux'
 export interface Props {
     challengeName: string;
 }
 
 const ChallengeButton: React.FC<Props> = ({ challengeName }) => {
-    const selectedChallengeName = useSelector(
-        (state: Data) => state.data.selectedChallenge.name
-    )
-    const challengeList: Challenge[] = useSelector(
-        (state: Data) => state.data.challengeList
-    )
+    const authenticated = useSelector((state: Data) => state.data.auth.authenticated)
+    const challengeList = useSelector((state: Data) => state.data.challengeList)
+    const selectedChallengeName = useSelector((state: Data) => state.data.selectedChallenge.name)
 
     return (
         <Container
             className={
-                selectedChallengeName && challengeName.split('/')[0] === selectedChallengeName.split('/')[0].split(' ').join('_') && challengeName.split('/')[1] === selectedChallengeName.split('/')[1].split(' ').join('_') ? 'active' : ''}
+                selectedChallengeName && challengeName.split('/')[0].toUpperCase() === selectedChallengeName.split('/')[0].split(' ').join('_').toUpperCase() && challengeName.split('/')[1].toUpperCase() === selectedChallengeName.split('/')[1].split(' ').join('_').toUpperCase() ? 'active' : ''}
         >
-            <div style={{ width: '100%' }}>
+            <Challenge>
                 <div>
                     <HashtagIcon />
                     {challengeName ? (
@@ -29,16 +26,16 @@ const ChallengeButton: React.FC<Props> = ({ challengeName }) => {
                         <></>
                     )}
                 </div>
-                {challengeList && challengeList.filter((element) => {
+                {authenticated && challengeList && challengeList.filter((challenge) => {
                     return (
-                        element.challengeId.toUpperCase() === challengeName.split('/')[1].toUpperCase() && element.contestId.toUpperCase() === challengeName.split('/')[0].toUpperCase()
+                        challenge.challengeId.toUpperCase() === challengeName.split('/')[1].toUpperCase() && challenge.contestId.toUpperCase() === challengeName.split('/')[0].toUpperCase()
                     )
                 }).length > 0 ? (
                         <CheckIcon />
                     ) : (
                         <></>
                     )}
-            </div>
+            </Challenge>
         </Container>
     )
 }

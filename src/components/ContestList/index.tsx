@@ -1,30 +1,21 @@
 import React, { useCallback, useState } from 'react'
-
-import { ContainerList, Category } from './styles'
-
-import ChallengeButton from '../ChallengeButton'
 import ContestButton from '../ContestButton'
-import { useFetch } from 'src/hooks/useFetch'
-import { useSelector, useDispatch } from 'react-redux'
-
-import { Challenge, Contest, Data } from '../Utils'
+import ChallengeButton from '../ChallengeButton'
+import { Challenge, Data } from '../Interface'
+import { useDispatch, useSelector } from 'react-redux'
+import { ContainerList, Category } from './styles'
 
 const ContestList: React.FC = () => {
     const dispatch = useDispatch()
     const data = useSelector((state: Data) => state.data)
+    const dataTree = useSelector((state: Data) => state.data.tree)
 
     const [contestsActive, setContestsActive] = useState<string>('')
-
-    const { data: dataTree } = useFetch<Contest>(
-        '/git/trees/45a03b077a6c35310942f1f493a3a9c3f042f6c4?recursive="true"'
-    )
 
     const handleSelectChange = useCallback(
         (contest: string) => {
             const newData = { data: data }
-
             newData.data.selectedChallenge = { name: `${contest}` }
-
             dispatch({ type: 'CHALLENGE', data: newData })
         },
         [dispatch, data]
@@ -35,13 +26,11 @@ const ContestList: React.FC = () => {
             setContestsActive('')
             const newData = { data: data }
             newData.data.selectedChallenge = { name: '' }
-
             dispatch({ type: 'CHALLENGE', data: newData })
         } else {
             setContestsActive(contest)
             const newData = { data: data }
             newData.data.selectedChallenge = { name: `${contest}/` }
-
             dispatch({ type: 'CHALLENGE', data: newData })
         }
     }
@@ -52,7 +41,7 @@ const ContestList: React.FC = () => {
                 <span>Contests</span>
             </Category>
             <div id="listOfContests">
-                {dataTree?.tree
+                {dataTree && dataTree?.tree
           .filter((contest: Challenge) => {
               return (!contest.path.includes('.github') && (contest.path.split('/').length === 1 || (contest.path.split('/').length === 2 && contest.path.split('/')[1] !== 'requirements.txt')))
           })
@@ -66,8 +55,7 @@ const ContestList: React.FC = () => {
                               handleVisibleContest(contest.path.split('/')[0])
                           }
                       >
-                          <ContestButton
-                              contestName={contest.path}
+                          <ContestButton contestName={contest.path}
                               size={
                                   dataTree.tree.filter((elem:Challenge) => {
                                       return (elem.path.includes(contest.path) &&

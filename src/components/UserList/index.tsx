@@ -1,10 +1,8 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import base64 from 'base-64'
-
+import { useSelector } from 'react-redux'
+import { User, UserApi, Data } from '../Interface'
 import { Container, Role, User as UserElem, Avatar } from './styles'
-
-import { User, UserApi, Data } from '../Utils'
 
 export interface Props {
     user: {
@@ -26,10 +24,10 @@ const UserRow: React.FC<Props> = ({ user, score }) => {
 }
 
 const UserList: React.FC = () => {
-    const challengeName: string = useSelector((state: Data) => state.data.selectedChallenge.name)
     const globalScore: User[] = useSelector((state: Data) => state.data.globalScore)
     const listOfUsers: UserApi[] = useSelector((state: Data) => state.data.listOfUsers)
     const challengeScore: User[] = useSelector((state: Data) => state.data.challengeScore)
+    const challengeName: string = useSelector((state: Data) => state.data.selectedChallenge.name)
 
     return (
         <Container>

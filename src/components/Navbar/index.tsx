@@ -1,39 +1,11 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useFetch } from 'src/hooks/useFetch'
-
+import React  from 'react'
 import Authentication from '../Authentication'
+import { useSelector } from 'react-redux'
 import { Container, Avatar, UserInfo, Auth } from './styles'
-
-import { Data, Challenge, User, UserApi, ChallengeContent } from '../Utils'
+import { Data } from '../Interface'
 
 const Navbar: React.FC = () => {
-    const dispatch = useDispatch()
-    const data = useSelector((state: Data) => state.data)
     const dataAuth = useSelector((state: Data) => state.data.auth)
-    const userId = useSelector((state: Data) => state.data.auth.user.id)
-    const challengeName = useSelector((state: Data) => state.data.selectedChallenge.name)
-
-    const { data: globalScore } = useFetch<User[]>('https://code-contest-backend.herokuapp.com/contests/global')
-    const { data: listOfUsers } = useFetch<UserApi[]>('https://code-contest-backend.herokuapp.com/contests/user')
-    const { data: challengeScore } = useFetch<User[]>(`https://code-contest-backend.herokuapp.com/contests/global/${challengeName}`)
-    const { data: userScore } = useFetch<User[]>(`https://code-contest-backend.herokuapp.com/contests/${userId}/${challengeName}`)
-    const { data: challengeIndex } = useFetch<ChallengeContent>(`/contents/${challengeName?.split(' ').join('_')}/index.md`)
-    const { data: challengeList } = useFetch<Challenge[]>(`https://code-contest-backend.herokuapp.com/contests/list/${userId}`)
-    useEffect(() => {
-        const newData = { data: data }
-
-        if (globalScore && listOfUsers && challengeScore && userScore && challengeIndex && challengeList) {
-            newData.data.globalScore = globalScore
-            newData.data.listOfUsers = listOfUsers
-            newData.data.challengeScore = challengeScore
-            newData.data.userScore = userScore
-            newData.data.challengeIndex = challengeIndex
-            newData.data.challengeList = challengeList
-        }
-
-        dispatch({ type: 'CHALLENGE', data: newData })
-    }, [globalScore, listOfUsers, challengeScore, userScore, challengeIndex, challengeList, dispatch, data])
 
     return (
         <Container>

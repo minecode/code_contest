@@ -1,19 +1,16 @@
 import React from 'react'
-
-import { GoogleLogin, GoogleLogout } from 'react-google-login'
-import { useDispatch, useSelector } from 'react-redux'
 import base64 from 'base-64'
 import apiDatabase from '../../services/apiDatabase'
-import { Data } from '../Utils'
+import { Data } from '../Interface'
 import { Auth, BtnGoogle } from './styles'
+import { GoogleLogin, GoogleLogout } from 'react-google-login'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 const Authentication: React.FC = () => {
-    const data = useSelector((state: Data) => state.data)
-    const authentication = useSelector(
-        (state: Data) => state.data.auth.authenticated
-    )
-
     const dispatch = useDispatch()
+    const data = useSelector((state: Data) => state.data)
+    const authenticated = useSelector((state: Data) => state.data.auth.authenticated)
 
     const login = async (response: any) => {
         const newData = { data: data }
@@ -41,40 +38,28 @@ const Authentication: React.FC = () => {
 
     const logout = () => {
         const newData = { data: data }
-        newData.data.auth = {
-            authenticated: false,
-            user: {
-                id: '',
-                name: '',
-                surname: '',
-                image: ''
-            },
-            token: ''
-        }
+        newData.data.auth.authenticated = false
         dispatch({ type: 'LOGOUT', data: newData })
     }
 
     return (
         <Auth>
-            {authentication ? (
+            {authenticated ? (
                 <GoogleLogout
                     clientId="156221636932-bvl7ocr3bhrkikgcqc99k4g1a1s0sla1.apps.googleusercontent.com"
-                    buttonText="Logout"
                     onLogoutSuccess={logout}
-                    className="BtnGoogle"
                     render={(renderProps) => (
                         <BtnGoogle
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
                         >
-              Logout
+                            Logout
                         </BtnGoogle>
                     )}
                 ></GoogleLogout>
             ) : (
                 <GoogleLogin
                     clientId="156221636932-bvl7ocr3bhrkikgcqc99k4g1a1s0sla1.apps.googleusercontent.com"
-                    buttonText="Login"
                     onSuccess={login}
                     onFailure={badResponseGoogle}
                     cookiePolicy={'single_host_origin'}
@@ -84,7 +69,7 @@ const Authentication: React.FC = () => {
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
                         >
-              Sign In w/ Google
+                            Sign In w/ Google
                         </BtnGoogle>
                     )}
                 />
