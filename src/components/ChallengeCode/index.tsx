@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import base64 from 'base-64'
 import Dropzone from 'react-dropzone'
 import apiCodeContest from '../../services/apiCodeContest'
+import apiDatabase from '../../services/apiDatabase'
 import { config } from '../Utils'
 import { useSelector } from 'react-redux'
 import { Data, BodyRequest } from '../Interface'
@@ -50,7 +51,7 @@ const ChallengeCode: React.FC = () => {
                     }
 
                     try {
-                        const fileAlreadyExist = await apiCodeContest.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, config)
+                        const fileAlreadyExist = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`)
                         bodyRequest.sha = `${fileAlreadyExist.data.sha}`
                     } catch (error) {
                         console.log(error)
@@ -83,7 +84,7 @@ const ChallengeCode: React.FC = () => {
         }
 
         try {
-            const fileAlreadyExist = await apiCodeContest.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, config)
+            const fileAlreadyExist = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`)
             bodyRequest.sha = `${fileAlreadyExist.data.sha}`
         } catch (error) {
             console.log(error)
@@ -93,7 +94,7 @@ const ChallengeCode: React.FC = () => {
 
     const uploadRepoCode = async () => {
         try {
-            const getCodeSended = await apiCodeContest.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, config)
+            const getCodeSended = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`)
             const bodyRequest: BodyRequest = {
                 message: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
                 committer: {
