@@ -84,7 +84,7 @@ const ChallengeCode: React.FC = () => {
         }
 
         try {
-            const fileAlreadyExist = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`)
+            const fileAlreadyExist = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`)
             bodyRequest.sha = `${fileAlreadyExist.data.sha}`
         } catch (error) {
             console.log(error)
@@ -94,7 +94,7 @@ const ChallengeCode: React.FC = () => {
 
     const uploadRepoCode = async () => {
         try {
-            const getCodeSended = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`)
+            const getCodeSended = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`)
             const bodyRequest: BodyRequest = {
                 message: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
                 committer: {
