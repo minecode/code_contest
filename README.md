@@ -34,7 +34,7 @@ Login with google.
   Title (string, required)
   Value (double [0... 1], required)
   ```
-  
+
   - **ScoreUserChallenge**
   ```
   ID (int, required, unique)
@@ -43,7 +43,7 @@ Login with google.
   Challenge.ID (int, required)
   Score (double, required)
   ```
-  
+
   - **User**
   ```
   ID (int, required, unique)
@@ -51,7 +51,7 @@ Login with google.
   LastName (string, required)
   ImageUrl (string, required)
   ```
-  
+
 **Workflows**:
 
   - **Require login**:
@@ -72,4 +72,4 @@ Login with google.
     Select contest
     - **View challenge**:
     Select challenge
-    
+
