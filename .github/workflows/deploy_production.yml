@@ -39,4 +39,4 @@ jobs:
           personal_token: ${{ secrets.LOGIN_TOKEN }}
           external_repository: minecode/code_contest
           publish_branch: master
-          publish_dir: ./next
+          publish_dir: ./.next

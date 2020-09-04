@@ -38,4 +38,4 @@ jobs:
           user_email: 'minecode.geral@gmail.com'
           personal_token: ${{ secrets.LOGIN_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./next
+          publish_dir: ./.next
