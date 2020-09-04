@@ -34,7 +34,8 @@
 		"build": "next build",
 		"start": "next start",
 		"predeploy": "yarn build",
-		"deploy": "gh-pages -d build"
+		"cleanup": "rm -rf node_modules/gh-pages/.cache",
+		"deploy": "yarn cleanup && gh-pages -d build"
 	},
 	"browserslist": {
 		"production": [
