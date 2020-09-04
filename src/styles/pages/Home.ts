@@ -6,17 +6,17 @@ export const Grid = styled.div`
     grid-template-rows: 46px auto auto auto;
     grid-template-areas:
         'LG LG'
-        'CL CI';
-        'CL CD';
+        'CL CI'
+        'CL CD'
         'CL DF';
     @media (min-width: 1024px) {
         grid-template-columns: 20% 65% 15%;
         grid-template-rows: 46px auto auto auto;
         grid-template-areas:
             'LG LG LG'
-            'CL CI UL';
-            'CL CD UL';
-            'CL DF UL';
+            'CL CI UL'
+            'CL CD UL'
+            'CL DF UL'
     }
     @media (min-width: 1366px) {
         grid-template-columns: 20% 60% 20%;

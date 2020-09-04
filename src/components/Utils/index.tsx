@@ -12,7 +12,7 @@ export function titleCase (str: string) {
 
 export const config = {
     headers: {
-        Authorization: `Basic ${(process.env.REACT_APP_APIKEY || 'null')}`,
+        Authorization: `Basic ${((process.env.NEXT_PUBLIC_REACT_APP_APIKEY || process.env.REACT_APP_APIKEY )|| 'null')}`,
         Accept: 'application/vnd.github.antiope-preview+json'
     }
 }
