@@ -18,7 +18,7 @@ import {
 	Contest
 } from '../components/Interface'
 
-const Layout: React.FC = () => {
+const Home: React.FC = () => {
 	const dispatch = useDispatch()
 	const data = useSelector((state: Data) => state.data)
 	const userId = useSelector((state: Data) => state.data.auth.user.id)
@@ -55,6 +55,12 @@ const Layout: React.FC = () => {
 
 	useEffect(() => {
 		const newData = { data: data }
+		console.log('globalScore ', globalScore)
+		console.log('listOfUsers ', listOfUsers)
+		console.log('challengeScore ', challengeScore)
+		console.log('userScore ', userScore)
+		console.log('challengeList ', challengeList)
+		console.log('dataTree ', dataTree)
 		if (
 			globalScore &&
 			listOfUsers &&
@@ -121,4 +127,4 @@ const Layout: React.FC = () => {
 	)
 }
 
-export default Layout
+export default Home
