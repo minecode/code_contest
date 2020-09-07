@@ -30,11 +30,11 @@ jobs:
               run: yarn build
               env:
                   NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
-                  NEXT_PUBLIC_BASE_PATH: /code_contest_frontend
+                  NEXT_PUBLIC_BASE_PATH: /
             - run: yarn export
               env:
                   NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
-                  NEXT_PUBLIC_BASE_PATH: /code_contest_frontend
+                  NEXT_PUBLIC_BASE_PATH: /
             - run: touch ./out/.nojekyll
 
             - name: Deploy
