@@ -27,9 +27,14 @@ jobs:
             - run: yarn install
 
             - name: Build project
-              run: yarn deploy
+              run: yarn build
               env:
                   REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
+                  NEXT_PUBLIC_BASE_PATH: /code_contest_frontend
+            - run: yarn export
+              env:
+                  NEXT_PUBLIC_BASE_PATH: /code_contest_frontend
+            - run: touch ./out/.nojekyll
 
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v3
