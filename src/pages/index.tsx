@@ -55,12 +55,6 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		const newData = { data: data }
-		console.log('globalScore ', globalScore)
-		console.log('listOfUsers ', listOfUsers)
-		console.log('challengeScore ', challengeScore)
-		console.log('userScore ', userScore)
-		console.log('challengeList ', challengeList)
-		console.log('dataTree ', dataTree)
 		if (
 			globalScore &&
 			listOfUsers &&
