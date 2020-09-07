@@ -1,4 +1,4 @@
-name: Project deploy for develop
+name: Project deploy for master
 on:
     pull_request:
         types:
@@ -32,11 +32,11 @@ jobs:
               run: yarn build
               env:
                   NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
-                  NEXT_PUBLIC_BASE_PATH: /
+                  NEXT_PUBLIC_BASE_PATH: /code_contest
             - run: yarn export
               env:
                   NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
-                  NEXT_PUBLIC_BASE_PATH: /
+                  NEXT_PUBLIC_BASE_PATH: /code_contest
             - run: touch ./out/.nojekyll
 
             - name: Deploy
