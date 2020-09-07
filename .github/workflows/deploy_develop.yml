@@ -1,6 +1,7 @@
 name: Project deploy for develop
 on:
     pull_request:
+        types: closed
         branches:
             - develop
 

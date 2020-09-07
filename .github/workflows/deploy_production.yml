@@ -1,6 +1,8 @@
-name: Project deploy for production
+name: Project deploy for develop
 on:
     pull_request:
+        types:
+            - closed
         branches:
             - master
 
