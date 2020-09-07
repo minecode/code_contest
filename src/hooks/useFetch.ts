@@ -3,6 +3,7 @@ import { config } from '../components/Utils'
 import apiCodeContest from '../services/apiCodeContest'
 
 export function useFetch<Data = any, Error = any>(url: string) {
+	console.log(config)
 	const { data, error, mutate } = useSWR<Data, Error>(
 		url,
 		async url => {
