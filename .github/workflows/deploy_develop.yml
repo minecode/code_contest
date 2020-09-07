@@ -1,41 +1,48 @@
 name: Project deploy for develop
 on:
-  pull_request:
-    branches:
-      - develop
+    pull_request:
+        types: closed
+        branches:
+            - develop
 
 jobs:
-  deploy:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/checkout@v1
+    deploy:
+        runs-on: ubuntu-18.04
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/checkout@v1
 
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
+            - name: Setup Node
+              uses: actions/setup-node@v1
+              with:
+                  node-version: '10.x'
 
-      - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+            - name: Cache dependencies
+              uses: actions/cache@v1
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
-      - run: yarn install
+            - run: yarn install
 
-      - name: Build project
-        run: yarn build
-        env:
-          REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
+            - name: Build project
+              run: yarn build
+              env:
+                  NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
+                  NEXT_PUBLIC_BASE_PATH: /code_contest_frontend
+            - run: yarn export
+              env:
+                  NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
+                  NEXT_PUBLIC_BASE_PATH: /code_contest_frontend
+            - run: touch ./out/.nojekyll
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          user_name: 'minecodebot'
-          user_email: 'minecode.geral@gmail.com'
-          personal_token: ${{ secrets.LOGIN_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./build
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  user_name: 'minecodebot'
+                  user_email: 'minecode.geral@gmail.com'
+                  personal_token: ${{ secrets.LOGIN_TOKEN }}
+                  publish_branch: gh-pages
+                  publish_dir: ./out
