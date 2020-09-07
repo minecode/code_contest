@@ -1,1 +1,0 @@
-{"ast":null,"code":"import axios from 'axios';\nconst apiDatabase = axios.create({\n  baseURL: 'https://code-contest-backend.herokuapp.com/contests'\n});\nexport default apiDatabase;","map":null,"metadata":{},"sourceType":"module"}

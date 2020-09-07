@@ -1,1 +1,0 @@
-{"ast":null,"code":"import axios from 'axios';\nvar apiCodeContest = axios.create({\n  baseURL: 'https://api.github.com/repos/minecode/code_contest_responses'\n});\nexport default apiCodeContest;","map":null,"metadata":{},"sourceType":"module"}
