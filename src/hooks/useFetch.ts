@@ -3,7 +3,6 @@ import { config } from '../components/Utils'
 import apiCodeContest from '../services/apiCodeContest'
 
 export function useFetch<Data = any, Error = any>(url: string) {
-	console.log('config', config)
 	const { data, error, mutate } = useSWR<Data, Error>(
 		url,
 		async url => {
@@ -14,7 +13,5 @@ export function useFetch<Data = any, Error = any>(url: string) {
 			revalidateOnFocus: true
 		}
 	)
-	console.log(url, data)
-	console.log(url, error)
 	return { data, error, mutate }
 }
