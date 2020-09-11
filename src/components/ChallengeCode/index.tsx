@@ -179,7 +179,12 @@ const ChallengeCode: React.FC = () => {
 			{selectedChallengeName &&
 			selectedChallengeName.split('/')[1].length > 0 ? (
 				<ChallengeCodeFiles>
-					{bodyRequest && console.log('Body request', bodyRequest) ? (
+					{bodyRequest ? (
+						<>{console.log('Body request', bodyRequest)}</>
+					) : (
+						<></>
+					)}
+					{bodyRequest ? (
 						<>
 							<Editor
 								debounceChangePeriod={1000}
