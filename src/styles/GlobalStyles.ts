@@ -33,4 +33,8 @@ export default createGlobalStyle`
         --rocketseat: #6633cc;
         --green: #149414;
     }
+
+	.light {
+		filter: invert(1) hue-rotate(180deg)
+	}
 `
