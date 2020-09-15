@@ -137,12 +137,12 @@ const ChallengeCode: React.FC = () => {
 	}
 
 	const uploadRepoCode = async () => {
-		try {
-			const getCodeSended = await apiDatabase.get(
-				`/contents/${selectedChallengeName?.split(' ').join('_')}/${
-					dataAuth.user.id
-				}`
-			)
+		const getCodeSended = await apiDatabase.get(
+			`/contents/${selectedChallengeName?.split(' ').join('_')}/${
+				dataAuth.user.id
+			}`
+		)
+		if (getCodeSended.data.content) {
 			const bodyRequest: BodyRequest = {
 				message: `${selectedChallengeName?.split(' ').join('_')}/${
 					dataAuth.user.id
@@ -154,7 +154,7 @@ const ChallengeCode: React.FC = () => {
 				content: `${getCodeSended.data.content}`
 			}
 			setBodyRequest(bodyRequest)
-		} catch {
+		} else {
 			const bodyRequest: BodyRequest = {
 				message: `${selectedChallengeName?.split(' ').join('_')}/${
 					dataAuth.user.id
