@@ -13,7 +13,11 @@ const Navbar: React.FC = () => {
 	const [theme, setTheme] = usePeristedState('theme', 'dark')
 	useEffect(() => {
 		if (theme === 'light') {
-			document.documentElement.classList.toggle('light')
+			document.documentElement.classList.add('light')
+			document.documentElement.classList.remove('dark')
+		} else if (theme === 'dark') {
+			document.documentElement.classList.remove('light')
+			document.documentElement.classList.add('dark')
 		}
 	}, [])
 
@@ -44,6 +48,7 @@ const Navbar: React.FC = () => {
 				<Switch
 					onChange={() => {
 						document.documentElement.classList.toggle('light')
+						document.documentElement.classList.toggle('dark')
 						setTheme(theme === 'light' ? 'dark' : 'light')
 					}}
 					checked={theme === 'light'}
@@ -52,8 +57,8 @@ const Navbar: React.FC = () => {
 					height={10}
 					width={40}
 					handleDiameter={20}
-					offColor={shade(0.5, 'rgb(32, 34, 37)')}
-					onColor={'#6e86d6'}
+					offColor={shade(0.15, '#36393f')}
+					onColor={shade(0.15, '#e1e1e1')}
 				/>
 			) : (
 				<></>
