@@ -6,6 +6,7 @@ import { Data } from '../Interface'
 import Switch from 'react-switch'
 import { shade } from 'polished'
 import usePeristedState from '../../hooks/usePersistedState'
+import { ReCaptcha } from 'react-recaptcha-v3'
 
 const Navbar: React.FC = () => {
 	const dataAuth = useSelector((state: Data) => state.data.auth)
@@ -15,8 +16,19 @@ const Navbar: React.FC = () => {
 			document.documentElement.classList.toggle('light')
 		}
 	}, [])
+
+	const verifyCallback = recaptchaToken => {
+		// Here you will get the final recaptchaToken!!!
+		console.log(recaptchaToken, '<= your recaptcha token')
+	}
+
 	return (
 		<Container>
+			<ReCaptcha
+				sitekey="6LewbMwZAAAAAAeKjMMbilsGbBNGC5IRrdrXe-v9"
+				action="string"
+				verifyCallback={verifyCallback}
+			/>
 			{dataAuth.authenticated ? (
 				<UserInfo>
 					<span>Welcome, {dataAuth.user.name}!</span>
