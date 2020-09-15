@@ -184,7 +184,7 @@ const ChallengeCode: React.FC = () => {
 					) : (
 						<></>
 					)}
-					{bodyRequest ? (
+					{bodyRequest && bodyRequest.content !== 'undefined'? (
 						<>
 							<Editor
 								debounceChangePeriod={1000}
