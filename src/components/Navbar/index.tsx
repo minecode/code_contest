@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Authentication from '../Authentication'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, Avatar, UserInfo, Auth } from './Navbar'
 import { Data } from '../Interface'
 import Switch from 'react-switch'
@@ -9,8 +9,15 @@ import usePeristedState from '../../hooks/usePersistedState'
 import { ReCaptcha } from 'react-recaptcha-v3'
 
 const Navbar: React.FC = () => {
+	const dispatch = useDispatch()
+	const data = useSelector((state: Data) => state.data)
 	const dataAuth = useSelector((state: Data) => state.data.auth)
 	const [theme, setTheme] = usePeristedState('theme', 'dark')
+	const [selectedChallengeName, setselectedChallengeName] = usePeristedState(
+		'challenge',
+		''
+	)
+
 	useEffect(() => {
 		if (theme === 'light') {
 			document.documentElement.classList.add('light')
@@ -19,11 +26,14 @@ const Navbar: React.FC = () => {
 			document.documentElement.classList.remove('light')
 			document.documentElement.classList.add('dark')
 		}
+		const newData = { data: data }
+		newData.data.selectedChallenge = { name: `${selectedChallengeName}` }
+		dispatch({ type: 'CHALLENGE', data: newData })
 	}, [])
 
 	const verifyCallback = recaptchaToken => {
 		// Here you will get the final recaptchaToken!!!
-		console.log(recaptchaToken, '<= your recaptcha token')
+		// console.log(recaptchaToken, '<= your recaptcha token')
 	}
 
 	return (
