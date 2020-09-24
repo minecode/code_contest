@@ -29,7 +29,6 @@ const ContestList: React.FC<Props> = ({ contents }) => {
 			const newData = { data: data }
 			newData.data.selectedChallenge = `${contest}`
 			dispatch({ type: 'CHALLENGE', data: newData })
-			console.log(newData)
 		},
 		[dispatch, data]
 	)

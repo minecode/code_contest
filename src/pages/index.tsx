@@ -81,9 +81,9 @@ const Home: React.FC = () => {
 					<Navbar />
 					<ContestList contents={contents} />
 					<Container>
-						{selectedChallenge && selectedChallenge.name &&
-						selectedChallenge.name.split('/').length > 1 &&
-						selectedChallenge.name.split('/')[1].length > 1 ? (
+						{selectedChallenge &&
+						selectedChallenge.split('/').length > 1 &&
+						selectedChallenge.split('/')[1].length > 1 ? (
 							<>
 								<ChallengeInfo />
 								<ChallengeCode />

@@ -15,6 +15,7 @@ const ChallengeInfo: React.FC = () => {
 	const selectedChallenge = useSelector(
 		(state: Data) => state.data.selectedChallenge
 	)
+	console.log(selectedChallenge)
 	const [challengeIndex, setChallengeIndex] = useState<string>()
 
 	var s3 = new AWS.S3({
@@ -34,7 +35,6 @@ const ChallengeInfo: React.FC = () => {
 				setChallengeIndex(data.Body?.toString('utf-8'))
 			}
 		})
-		console.log("SSSSSS")
 		// eslint-disable-next-line
 	}, [selectedChallenge])
 
