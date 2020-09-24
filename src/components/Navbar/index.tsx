@@ -16,6 +16,7 @@ import Switch from 'react-switch'
 import { shade } from 'polished'
 import usePeristedState from '../../hooks/usePersistedState'
 import { ReCaptcha } from 'react-recaptcha-v3'
+import { useRouter } from 'next/router'
 
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch()
@@ -48,6 +49,7 @@ const Navbar: React.FC = () => {
 		dispatch({ type: 'LOGOUT', data: newData })
 		localStorage.setItem('auth', JSON.stringify(newData.data.auth))
 	}
+	const router = useRouter()
 
 	return (
 		<Container>
@@ -69,10 +71,20 @@ const Navbar: React.FC = () => {
 						<Avatar src={auth.user.image} />
 					</UserInfo>
 					<div style={{ display: 'flex' }}>
-						{/* <Dashboard to={location.pathname.includes('dashboard') ? '/' : '/dashboard'}>
-                            <span>{location.pathname.includes('dashboard') ? "Home" : "Dashboard" }</span>
-                            <DashboardIcon />
-                        </Dashboard> */}
+						<Dashboard
+							onClick={() => {
+								location.pathname.includes('dashboard')
+									? router.push('/')
+									: router.push('/dashboard')
+							}}
+						>
+							<span>
+								{location.pathname.includes('dashboard')
+									? 'Home'
+									: 'Dashboard'}
+							</span>
+							<DashboardIcon />
+						</Dashboard>
 						<LogoutButton
 							onClick={() => {
 								logout()

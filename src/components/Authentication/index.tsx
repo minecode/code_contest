@@ -45,7 +45,6 @@ const Authentication: React.FC = () => {
 				token: access_token ? access_token : ''
 			})
 		)
-		console.log(auth)
 		router.push('/')
 	}
 
