@@ -32,11 +32,23 @@ jobs:
               run: yarn build
               env:
                   NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
-                  NEXT_PUBLIC_BASE_PATH: /code_contest
+                  NEXT_PUBLIC_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_CLIENT_ID }}
+                  NEXT_PUBLIC_REDIRECT_URI: ${{ secrets.NEXT_PUBLIC_REDIRECT_URI }}
+                  NEXT_PUBLIC_AWS_REGION: ${{ secrets.NEXT_PUBLIC_AWS_REGION }}
+                  NEXT_PUBLIC_AWS_ACCESS_KEY_ID: ${{ secrets.NEXT_PUBLIC_AWS_ACCESS_KEY_ID }}
+                  NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_ID: ${{ secrets.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_ID }}
+                  NEXT_PUBLIC_AWS_LOGIN: ${{ secrets.NEXT_PUBLIC_AWS_LOGIN }}
+                  NEXT_PUBLIC_BASE_PATH: /
             - run: yarn export
               env:
                   NEXT_PUBLIC_REACT_APP_APIKEY: ${{ secrets.ACCESS_TOKEN }}
-                  NEXT_PUBLIC_BASE_PATH: /code_contest
+                  NEXT_PUBLIC_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_CLIENT_ID }}
+                  NEXT_PUBLIC_REDIRECT_URI: ${{ secrets.NEXT_PUBLIC_REDIRECT_URI }}
+                  NEXT_PUBLIC_AWS_REGION: ${{ secrets.NEXT_PUBLIC_AWS_REGION }}
+                  NEXT_PUBLIC_AWS_ACCESS_KEY_ID: ${{ secrets.NEXT_PUBLIC_AWS_ACCESS_KEY_ID }}
+                  NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_ID: ${{ secrets.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_ID }}
+                  NEXT_PUBLIC_AWS_LOGIN: ${{ secrets.NEXT_PUBLIC_AWS_LOGIN }}
+                  NEXT_PUBLIC_BASE_PATH: /
             - run: touch ./out/.nojekyll
 
             - name: Deploy

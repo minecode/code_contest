@@ -1,66 +1,66 @@
-
 export interface Contest {
-    tree: Challenge[];
+	tree: Challenge[]
 }
 
 export interface Challenge {
-    id: string;
-    userId: string;
-    contestId: string;
-    challengeId: string;
-    score: number;
-    path: string;
+	id: string
+	userId: string
+	contestId: string
+	challengeId: string
+	score: number
+	path: string
 }
 
 export interface ChallengeContent {
-    content: string
+	content: string
 }
 
 export interface Data {
-    data: {
-        auth: {
-            authenticated: boolean,
-            user: {
-                id: string,
-                name: string,
-                surname: string,
-                image: string
-            },
-            token: string
-        },
-        selectedChallenge: {
-            name: string
-        },
-        globalScore: User[],
-        listOfUsers: UserApi[],
-        challengeScore: User[],
-        userScore: User[],
-        challengeIndex: ChallengeContent,
-        challengeList: Challenge[],
-        tree: Contest
-    }
+	data: {
+		auth: {
+			authenticated: boolean
+			user: {
+				id: string
+				name: string
+				surname: string
+				image: string
+			}
+			token: string
+		}
+		selectedChallenge: string
+		globalScore: User[]
+		listOfUsers: UserApi[]
+		challengeScore: User[]
+		userScore: User[]
+		challengeIndex: ChallengeContent
+		challengeList: Challenge[]
+		tree: Contest
+	}
 }
 
-
 export interface User {
-    userId?: string;
-    user: UserApi;
-    score: number;
+	userId?: string
+	user: UserApi
+	score: number
 }
 
 export interface UserApi {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    imageUrl: string;
+	userId: string
+	firstName: string
+	lastName: string
+	imageUrl: string
+}
+
+export interface BodyResponse {
+	content: string | undefined
 }
 
 export interface BodyRequest {
-    message: string,
-    committer: {
-        name: string,
-        email: string
-    },
-    content: string,
-    sha?: string
+	message: string
+	committer: {
+		name: string
+		email: string
+	}
+	content: string
+	sha?: string
 }

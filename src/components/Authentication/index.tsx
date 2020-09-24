@@ -1,89 +1,82 @@
-import React from "react";
-import base64 from "base-64";
-import apiDatabase from "../../services/apiDatabase";
-import { Data } from "../Interface";
-import {
-  Auth,
-  BtnGoogle,
-  LogoutIcon,
-  LoginIcon,
-} from "./Authentication";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import auth from '../../services/auth'
+import base64 from 'base-64'
+import { useRouter } from 'next/router'
 
 const Authentication: React.FC = () => {
-  const dispatch = useDispatch();
-  const data = useSelector((state: Data) => state.data);
-  const authenticated = useSelector(
-    (state: Data) => state.data.auth.authenticated
-  );
+	const router = useRouter()
+	const [access_token, setAccess_token] = useState<string>()
+	const [refresh_token, setRefresh_token] = useState<string>()
 
-  const login = async (response: any) => {
-    const newData = { data: data };
-    newData.data.auth = {
-      authenticated: true,
-      user: {
-        id: response.googleId,
-        name: response.profileObj.givenName,
-        surname: response.profileObj.familyName,
-        image: response.profileObj.imageUrl,
-      },
-      token: response.tokenId,
-    };
-    await apiDatabase.post(
-      `/user/${response.googleId}/${response.profileObj.givenName}/${
-        response.profileObj.familyName
-      }/${base64.encode(response.profileObj.imageUrl)}`
-    );
-    dispatch({ type: "LOGIN", data: newData });
-  };
+	const getCode = (code: string) => {
+		const params = new URLSearchParams()
+		params.append('grant_type', 'authorization_code')
+		params.append('client_id', process.env.NEXT_PUBLIC_CLIENT_ID || 'null')
+		params.append('redirect_uri', process.env.NEXT_PUBLIC_REDIRECT_URI || 'null')
+		params.append('code', code)
+		auth.post('/oauth2/token', params)
+			.then(function (response) {
+				// handle success
+				if (
+					response.data?.access_token &&
+					response.data?.refresh_token
+				) {
+					setAccess_token(base64.encode(response.data.access_token))
+					setRefresh_token(response.data.refresh_token)
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log('Error ', error)
+			})
+	}
 
-  const badResponseGoogle = (response: string) => {
-    dispatch({ type: "BAD_RESPONSE", data: null });
-  };
+	const setData = (dataResponse: any) => {
+		localStorage.setItem(
+			'auth',
+			JSON.stringify({
+				authenticated: true,
+				user: {
+					id: dataResponse.data.email,
+					name: dataResponse.data.name.split(' ').shift(),
+					surname: dataResponse.data.name.split(' ').pop(),
+					image: dataResponse.data.picture
+				},
+				token: access_token ? access_token : ''
+			})
+		)
+		router.push('/')
+	}
 
-  const logout = () => {
-    const newData = { data: data };
-    newData.data.auth.authenticated = false;
-    dispatch({ type: "LOGOUT", data: newData });
-  };
+	useEffect(() => {
+		if (access_token) {
+			auth.get('/oauth2/userInfo', {
+				headers: {
+					Authorization: 'Bearer ' + base64.decode(access_token)
+				}
+			})
+				.then(function (responseInfo) {
+					setData(responseInfo)
+				})
+				.catch(function (errorInfo) {
+					console.log(errorInfo)
+				})
+		}
+	}, [access_token])
 
-  return (
-    <Auth>
-      {authenticated ? (
-        <GoogleLogout
-          clientId="156221636932-bvl7ocr3bhrkikgcqc99k4g1a1s0sla1.apps.googleusercontent.com"
-          onLogoutSuccess={logout}
-          render={(renderProps) => (
-            <BtnGoogle
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-            >
-              <span>Logout </span>
-              <LogoutIcon />
-            </BtnGoogle>
-          )}
-        ></GoogleLogout>
-      ) : (
-        <GoogleLogin
-          clientId="156221636932-bvl7ocr3bhrkikgcqc99k4g1a1s0sla1.apps.googleusercontent.com"
-          onSuccess={login}
-          onFailure={badResponseGoogle}
-          cookiePolicy={"single_host_origin"}
-          isSignedIn={true}
-          render={(renderProps) => (
-            <BtnGoogle
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-            >
-              <span>Login w/ Google </span>
-              <LoginIcon />
-            </BtnGoogle>
-          )}
-        />
-      )}
-    </Auth>
-  );
-};
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search)
+		const code = params.get('code')
+		if (code) {
+			getCode(code)
+		}
+	}, [])
 
-export default Authentication;
+	return (
+		<>
+			<p>Redirecting...</p>
+		</>
+	)
+}
+
+export default Authentication
