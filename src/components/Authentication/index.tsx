@@ -1,83 +1,76 @@
-import React from 'react'
-import base64 from 'base-64'
-import apiDatabase from '../../services/apiDatabase'
+import React, {useEffect, useState} from 'react'
 import { Data } from '../Interface'
-import { Auth, BtnGoogle, LogoutIcon, LoginIcon } from './styles'
-import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import { useSelector, useDispatch } from 'react-redux'
-
+import auth from '../../services/auth'
+import base64 from "base-64";
+import {Redirect} from 'react-router-dom'
 
 const Authentication: React.FC = () => {
     const dispatch = useDispatch()
     const data = useSelector((state: Data) => state.data)
-    const authenticated = useSelector((state: Data) => state.data.auth.authenticated)
 
-    const login = async (response: any) => {
-        const newData = { data: data }
+    const [access_token, setAccess_token] = useState<string>()
+    const [refresh_token, setRefresh_token] = useState<string>()
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        if(code) {
+            getCode(code)
+        }
+    }, [])
+
+    const getCode = (code: string) => {
+        const params = new URLSearchParams();
+        params.append('grant_type', 'authorization_code');
+        params.append('client_id', '4s0k4rrrggv6utvjbq8fsbb2jj');
+        params.append('redirect_uri', 'http://localhost:3000/code_contest/authenticate');
+        params.append('code', code);
+        auth.post('/oauth2/token',params)
+            .then(function (response) {
+                // handle success
+                if(response.data?.access_token && response.data?.refresh_token) {
+                    setAccess_token(base64.encode(response.data.access_token))
+                    setRefresh_token(response.data.refresh_token)
+                }
+            })
+            .catch(function (error) {
+                // handle error
+                console.log("Error ",error)
+            })
+    }
+
+    useEffect(() => {
+        if(access_token) {
+            auth.get('/oauth2/userInfo', {
+                headers:{
+                    'Authorization': 'Bearer ' + base64.decode(access_token)
+                }
+            }).then(function (responseInfo) {
+                setData(responseInfo)
+            }).catch(function (errorInfo) {
+                console.log(errorInfo)
+            })
+        }
+    }, [access_token])
+
+    const setData = (dataResponse: any) => {
+        const newData = { data: data };
         newData.data.auth = {
             authenticated: true,
             user: {
-                id: response.googleId,
-                name: response.profileObj.givenName,
-                surname: response.profileObj.familyName,
-                image: response.profileObj.imageUrl
+                id: dataResponse.data.email,
+                name: dataResponse.data.name.split(" ").shift(),
+                surname: dataResponse.data.name.split(" ").pop(),
+                image: dataResponse.data.picture,
             },
-            token: response.tokenId
-        }
-        await apiDatabase.post(
-            `/user/${response.googleId}/${response.profileObj.givenName}/${
-                response.profileObj.familyName
-            }/${base64.encode(response.profileObj.imageUrl)}`
-        )
-        dispatch({ type: 'LOGIN', data: newData })
+            token: access_token ? access_token : '',
+        };
+        dispatch({ type: "LOGIN", data: newData });
     }
 
-    const badResponseGoogle = (response: string) => {
-        dispatch({ type: 'BAD_RESPONSE', data: null })
-    }
+    return <>{data.auth.authenticated ? <Redirect to = '/code_contest/' /> : <></>}</>
 
-    const logout = () => {
-        const newData = { data: data }
-        newData.data.auth.authenticated = false
-        dispatch({ type: 'LOGOUT', data: newData })
-    }
-
-    return (
-        <Auth>
-            {authenticated ? (
-                <GoogleLogout
-                    clientId="156221636932-bvl7ocr3bhrkikgcqc99k4g1a1s0sla1.apps.googleusercontent.com"
-                    onLogoutSuccess={logout}
-                    render={(renderProps) => (
-                        <BtnGoogle
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                        >
-                            <span>Logout </span>
-                            <LogoutIcon />
-                        </BtnGoogle>
-                    )}
-                ></GoogleLogout>
-            ) : (
-                <GoogleLogin
-                    clientId="156221636932-bvl7ocr3bhrkikgcqc99k4g1a1s0sla1.apps.googleusercontent.com"
-                    onSuccess={login}
-                    onFailure={badResponseGoogle}
-                    cookiePolicy={'single_host_origin'}
-                    isSignedIn={true}
-                    render={(renderProps) => (
-                        <BtnGoogle
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                        >
-                            <span>Login w/ Google </span>
-                            <LoginIcon />
-                        </BtnGoogle>
-                    )}
-                />
-            )}
-        </Auth>
-    )
 }
 
 export default Authentication

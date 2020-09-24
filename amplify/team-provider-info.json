@@ -1,0 +1,32 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-codecontest-dev-113228-authRole",
+      "UnauthRoleArn": "arn:aws:iam::783722640763:role/amplify-codecontest-dev-113228-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::783722640763:role/amplify-codecontest-dev-113228-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-codecontest-dev-113228-deployment",
+      "UnauthRoleName": "amplify-codecontest-dev-113228-unauthRole",
+      "StackName": "amplify-codecontest-dev-113228",
+      "StackId": "arn:aws:cloudformation:us-east-1:783722640763:stack/amplify-codecontest-dev-113228/3a1b03d0-fd88-11ea-92d4-0ef7f3f34731",
+      "AmplifyAppId": "d1x20ma8wlpaon"
+    },
+    "categories": {
+      "function": {
+        "codecontestac5b5e0dCustomMessage": {
+          "REDIRECTURL": "http://localhost:3000/",
+          "EMAILSUBJECT": "CodeContest",
+          "EMAILMESSAGE": "Confirm email"
+        },
+        "codecontestac5b5e0dPostConfirmation": {
+          "GROUP": "CodeContest"
+        }
+      },
+      "auth": {
+        "codecontestf6f8446e": {
+          "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"3599868780046874\",\"client_secret\":\"47101957c9099cc193e4779e34e46eaf\"},{\"ProviderName\":\"Google\",\"client_id\":\"    156221636932-bvl7ocr3bhrkikgcqc99k4g1a1s0sla1.apps.googleusercontent.com\",\"client_secret\":\"    gtlv-6Xx6HIMi7tyLqnhqInG\"}]"
+        }
+      }
+    }
+  }
+}

@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import base64 from 'base-64'
 import Dropzone from 'react-dropzone'
-import apiCodeContest from '../../services/apiCodeContest'
-import apiDatabase from '../../services/apiDatabase'
-import { config } from '../Utils'
 import { useSelector } from 'react-redux'
-import { Data, BodyRequest } from '../Interface'
+import { Data, BodyResponse } from '../Interface'
 import { Modal, Spinner, Col, Row } from 'react-bootstrap'
 import { Container, ChallengeCodeFiles, SubmitButton, ChallengeCodeFilesZone, Editor } from './styles'
 import 'ace-builds/src-noconflict/mode-python'
 import 'ace-builds/src-noconflict/theme-dracula'
 
+import AWS from 'aws-sdk';
 
 const ChallengeCode: React.FC = () => {
     const dataAuth = useSelector((state: Data) => state.data.auth)
@@ -19,8 +17,12 @@ const ChallengeCode: React.FC = () => {
     const [show, setShow] = useState(false)
     const [fileName, setFileName] = useState('')
     const [inProgress, setInProgress] = useState(false)
-    const [bodyRequest, setBodyRequest] = useState <BodyRequest | null >(null)
+    const [bodyResponse, setBodyResponse] = useState <BodyResponse | null >(null)
     const [currentChallengeName, setCurrentChallengeName] = useState<string>('challenge')
+
+    var s3 = new AWS.S3({apiVersion: '2006-03-01', region: 'us-east-1', accessKeyId: 'AKIA3M6MCOV556RF6YQG', secretAccessKey: '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'});
+
+    var lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: 'us-east-1', accessKeyId: 'AKIA3M6MCOV556RF6YQG', secretAccessKey: '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'});
 
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -29,92 +31,84 @@ const ChallengeCode: React.FC = () => {
         setShow(false)
         setFileName('')
         setInProgress(false)
-        setBodyRequest(null)
+        setBodyResponse(null)
         setCurrentChallengeName(selectedChallengeName)
     }
 
     const handleChallengeCode = (acceptedFile: any) => {
+
         setFileName(acceptedFile.map((file: any) => {
             const reader = new FileReader()
             reader.readAsDataURL(file)
             reader.addEventListener('load', async () => {
                 if (reader) {
                     const result = (reader.result as string).split(',')[1]
-
-                    const bodyRequest: BodyRequest = {
-                        message: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
-                        committer: {
-                            name: 'minecodebot',
-                            email: 'minecode.geral@gmail.com'
-                        },
-                        content: `${result}`
-                    }
-
-                    try {
-                        const fileAlreadyExist = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`)
-                        bodyRequest.sha = `${fileAlreadyExist.data.sha}`
-                    } catch (error) {
-                        console.log(error)
-                    }
-                    setBodyRequest(bodyRequest)
+                    setBodyResponse({content: base64.decode(result)})
                 }
             }, false)
             return file.name
         }))
     }
 
-    const submitFile = async () => {
-        setInProgress(true)
-        await apiCodeContest.put(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, bodyRequest, config)
-    }
-
     const submitCode = async () => {
         setInProgress(true)
-        await apiCodeContest.put(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/resolution.py`, bodyRequest, config)
+        var params = {
+            Body: bodyResponse?.content, 
+            Bucket: "code-contest", 
+            Key: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/response.py`, 
+        };
+        s3.putObject(params, function(err, data) {
+            if (err) {
+                console.log(err, err.stack)
+            } // an error occurred
+            else {
+                var params = {
+                    FunctionName: "codeContestTest", 
+                    Payload: '{ "Bucket": "code-contest", "Key": "'+selectedChallengeName?.split(" ").join("_")+'/'+dataAuth.user.id+'/response.py" }', 
+                };
+                lambda.invoke(params, function(err2, data2) {
+                    if (err2) console.log(err2, err2.stack); // an error occurred
+                    else     console.log(data2);           // successful response
+                });
+            }; // successful response
+        });
     }
 
     const onChange = async (newValue: string) => {
-        const bodyRequest: BodyRequest = {
-            message: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
-            committer: {
-                name: 'minecodebot',
-                email: 'minecode.geral@gmail.com'
-            },
-            content: `${base64.encode(newValue)}`
-        }
-
-        try {
-            const fileAlreadyExist = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`)
-            bodyRequest.sha = `${fileAlreadyExist.data.sha}`
-        } catch (error) {
-            console.log(error)
-        }
-        setBodyRequest(bodyRequest)
+        setBodyResponse({content: newValue})
     }
 
     const uploadRepoCode = async () => {
-        try {
-            const getCodeSended = await apiDatabase.get(`/contents/${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`)
-            const bodyRequest: BodyRequest = {
-                message: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
-                committer: {
-                    name: 'minecodebot',
-                    email: 'minecode.geral@gmail.com'
-                },
-                content: `${getCodeSended.data.content}`
+        var params = {
+            Bucket: "code-contest", 
+            Prefix: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}/`, 
+        };
+        s3.listObjectsV2(params, function(err, data) {
+            if (err) {
+                setBodyResponse({content: "# Place your code here"})
             }
-            setBodyRequest(bodyRequest)
-        } catch {
-            const bodyRequest: BodyRequest = {
-                message: `${selectedChallengeName?.split(' ').join('_')}/${dataAuth.user.id}`,
-                committer: {
-                    name: 'minecodebot',
-                    email: 'minecode.geral@gmail.com'
-                },
-                content: `${base64.encode('# Place your code here')}`
+            else {
+                let hasResponse = false
+                data.Contents?.map((item, i) => {
+                    if(item.Key?.slice(0,-1).split("/").length === 4) {
+                        var params = {
+                            Bucket: "code-contest", 
+                            Key: item.Key, 
+                        };
+                        s3.getObject(params, function(err2, data2) {
+                            if(err2) console.log(err2, err2.stack)
+                            else {
+                                hasResponse = true
+                                setBodyResponse({content: data2.Body?.toString('utf-8')})
+                            }
+                        })
+                    }
+                }) 
+                if(!hasResponse) {
+                    setBodyResponse({content: "# Place your code here"})
+                }           
             }
-            setBodyRequest(bodyRequest)
-        }
+        });
     }
 
     useEffect(() => {
@@ -126,7 +120,7 @@ const ChallengeCode: React.FC = () => {
         <Container>
             {selectedChallengeName && selectedChallengeName.split('/')[1].length > 0 ? 
                 <ChallengeCodeFiles>
-                    {bodyRequest ?
+                    {bodyResponse ?
                         <>
                             <Editor debounceChangePeriod={1000}
                                 mode='python'
@@ -138,7 +132,7 @@ const ChallengeCode: React.FC = () => {
                                 showGutter={true}
                                 highlightActiveLine={true}
                                 editorProps={{ $blockScrolling: true }}
-                                value={base64.decode(bodyRequest.content)}
+                                value={bodyResponse.content}
                                 setOptions={{
                                     enableBasicAutocompletion: false,
                                     enableLiveAutocompletion: false,
@@ -191,7 +185,7 @@ const ChallengeCode: React.FC = () => {
                                 </Row>
                             </Container>
                         </Modal.Body>
-                    </Modal> : fileName.length > 0 && bodyRequest ? <SubmitButton onClick={() => { submitFile(); handleShow() }}>Submit file</SubmitButton> : <></>}
+                    </Modal> : fileName.length > 0 && bodyResponse ? <SubmitButton onClick={() => { submitCode(); handleShow() }}>Submit file</SubmitButton> : <></>}
                 </ChallengeCodeFiles> : <></>
             }
         </Container>

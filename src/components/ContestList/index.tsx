@@ -1,27 +1,32 @@
 import React, { useCallback, useState } from 'react'
 import ContestButton from '../ContestButton'
 import ChallengeButton from '../ChallengeButton'
-import { Challenge, Data } from '../Interface'
+import { Data } from '../Interface'
 import { useDispatch, useSelector } from 'react-redux'
 import { ContainerList, Category } from './styles'
+import { Object } from 'aws-sdk/clients/s3'
 
-const ContestList: React.FC = () => {
+interface Props {
+    contents: Object[] | undefined
+}
+
+const ContestList: React.FC<Props> = ({contents}) => {
     const dispatch = useDispatch()
     const data = useSelector((state: Data) => state.data)
-    const dataTree = useSelector((state: Data) => state.data.tree)
 
-    const [contestsActive, setContestsActive] = useState<string>('')
+    const [contestsActive, setContestsActive] = useState<string | undefined>('')
 
     const handleSelectChange = useCallback(
-        (contest: string) => {
+        (contest: string | undefined) => {
             const newData = { data: data }
             newData.data.selectedChallenge = { name: `${contest}` }
+            
             dispatch({ type: 'CHALLENGE', data: newData })
         },
         [dispatch, data]
     )
 
-    const handleVisibleContest = (contest: string) => {
+    const handleVisibleContest = (contest: string | undefined) => {
         if (contestsActive === contest) {
             setContestsActive('')
             const newData = { data: data }
@@ -41,45 +46,50 @@ const ContestList: React.FC = () => {
                 <span>Contests</span>
             </Category>
             <div id="listOfContests">
-                {dataTree && dataTree?.tree
-          .filter((contest: Challenge) => {
-              return (!contest.path.includes('.github') && (contest.path.split('/').length === 1 || (contest.path.split('/').length === 2 && contest.path.split('/')[1] !== 'requirements.txt')))
-          })
-          .map((contest: Challenge, i: number) => (
-              <div key={i}>
-                  {contest.path.split('/').length === 1 ? (
-                      <div
-                          key={i}
-                          id={i.toString()}
-                          onClick={() =>
-                              handleVisibleContest(contest.path.split('/')[0])
-                          }
-                      >
-                          <ContestButton contestName={contest.path}
-                              size={
-                                  dataTree.tree.filter((elem:Challenge) => {
-                                      return (elem.path.includes(contest.path) &&
-                          elem.path.split('/').length === 2 && elem.path.split('/')[1] !== 'requirements.txt'
-                                      )
-                                  }).length
-                              }
-                          ></ContestButton>
-                      </div>
-                  ) : contest.path.split('/').length === 2 &&
-                contestsActive.includes(contest.path.split('/')[0]) ? (
-                          <div
-                              key={i}
-                              id={i.toString()}
-                              className={contest.path.split('/')[0]}
-                              onClick={() => handleSelectChange(contest.path)}
-                          >
-                              <ChallengeButton challengeName={contest.path} />
-                          </div>
-                      ) : (
-                          <></>
-                      )}
-              </div>
-          ))}
+                {contents && contents.map((item,i) => {
+                    if(item.Key?.slice(-1) === '/') {
+                        item.Key = item.Key?.slice(0,-1)
+                    }
+                    if(!item.Key?.includes('packages') && !item.Key?.includes('requirements.txt')){
+                        return (
+                            <div key={i}>
+                                {item.Key?.split("/").length === 1 ? 
+                                    (
+                                        <div
+                                        key={i+"_div1"}
+                                        id={i.toString()}
+                                        onClick={() =>{
+                                            handleVisibleContest(item.Key?.split("/")[0])
+                                        }}
+                                        >
+                                            <ContestButton contestName={item.Key}
+                                            size={
+                                                contents.filter((elem: Object) => {
+                                                    if(elem.Key && item.Key) {
+                                                        return (elem.Key.includes(item.Key) && elem.Key.split('/').length === 2)
+                                                    }
+                                                    return 0
+                                                }).length
+                                            }
+                                            ></ContestButton>
+                                        </div>
+                                    ) : item.Key?.split("/").length === 2 && contestsActive?.includes(item.Key?.split('/')[0]) ?
+                                    (
+                                        <div
+                                        key={i+"_div2"}
+                                        id={i.toString()}
+                                        className={item?.Key.split('/')[0]}
+                                        onClick={() => handleSelectChange(item?.Key)}
+                                        >
+                                            <ChallengeButton challengeName={item?.Key} />
+                                        </div>
+                                    ) : (<div key={i+"_div3"}></div>)
+                                }
+                            </div>
+                        )
+                    }
+                    return <div key={i}></div>
+                })}
             </div>
         </ContainerList>
     )

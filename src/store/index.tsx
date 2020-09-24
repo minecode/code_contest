@@ -20,7 +20,8 @@ const INITIAL_STATE = {
         challengeScore: null,
         userScore: null,
         challengeIndex: null,
-        challengeList: null
+        challengeList: null,
+        contents: null
     }
 }
 

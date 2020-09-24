@@ -55,6 +55,10 @@ export interface UserApi {
     imageUrl: string;
 }
 
+export interface BodyResponse {
+    content: string | undefined,
+}
+
 export interface BodyRequest {
     message: string,
     committer: {
