@@ -1,0 +1,82 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-codecontest-dev-113228-authRole",
+      "UnauthRoleArn": "arn:aws:iam::783722640763:role/amplify-codecontest-dev-113228-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::783722640763:role/amplify-codecontest-dev-113228-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-codecontest-dev-113228-deployment",
+      "UnauthRoleName": "amplify-codecontest-dev-113228-unauthRole",
+      "StackName": "amplify-codecontest-dev-113228",
+      "StackId": "arn:aws:cloudformation:us-east-1:783722640763:stack/amplify-codecontest-dev-113228/3a1b03d0-fd88-11ea-92d4-0ef7f3f34731",
+      "AmplifyAppId": "d1x20ma8wlpaon"
+    }
+  },
+  "function": {
+    "codecontestac5b5e0dCustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2020-09-23T10:43:16.175Z",
+      "lastPackageTimeStamp": "2020-09-23T10:43:16.321Z",
+      "distZipFilename": "codecontestac5b5e0dCustomMessage-7a6c5a47706f6c686c66-build.zip",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-codecontest-dev-113228-deployment/amplify-cfn-templates/function/codecontestac5b5e0dCustomMessage-cloudformation-template.json",
+        "logicalId": "functioncodecontestac5b5e0dCustomMessage"
+      },
+      "lastPushTimeStamp": "2020-09-23T16:39:10.862Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:783722640763:function:codecontestac5b5e0dCustomMessage-dev",
+        "Name": "codecontestac5b5e0dCustomMessage-dev",
+        "LambdaExecutionRole": "codecontestac5b5e0dCustomMessage-dev"
+      },
+      "lastPushDirHash": "izEoyMBiTydU/k9i7hxOue8/ARY="
+    },
+    "codecontestac5b5e0dPostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2020-09-23T10:43:16.181Z",
+      "lastPackageTimeStamp": "2020-09-23T10:43:16.442Z",
+      "distZipFilename": "codecontestac5b5e0dPostConfirmation-75516a654c4758513570-build.zip",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-codecontest-dev-113228-deployment/amplify-cfn-templates/function/codecontestac5b5e0dPostConfirmation-cloudformation-template.json",
+        "logicalId": "functioncodecontestac5b5e0dPostConfirmation"
+      },
+      "lastPushTimeStamp": "2020-09-23T16:39:10.867Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:783722640763:function:codecontestac5b5e0dPostConfirmation-dev",
+        "Name": "codecontestac5b5e0dPostConfirmation-dev",
+        "LambdaExecutionRole": "codecontestac5b5e0dPostConfirmation-dev"
+      },
+      "lastPushDirHash": "RmfOs527HJJxkOcN/FsHUPmjNh4="
+    }
+  },
+  "auth": {
+    "codecontestf6f8446e": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-codecontest-dev-113228-deployment/amplify-cfn-templates/auth/codecontestf6f8446e-cloudformation-template.yml",
+        "logicalId": "authcodecontestf6f8446e"
+      },
+      "lastPushTimeStamp": "2020-09-23T16:39:10.879Z",
+      "output": {
+        "AppClientSecret": "1jerl15bua3ofu06c38r623elfu3a5u4p6lmskgee7v8fk7go7q1",
+        "UserPoolId": "us-east-1_wpcaNyo3a",
+        "AppClientIDWeb": "4s0k4rrrggv6utvjbq8fsbb2jj",
+        "AppClientID": "3dfkbc07q7u73oma5bhill5b3g",
+        "HostedUIDomain": "codecontestf6f8446e-f6f8446e-dev",
+        "IdentityPoolId": "us-east-1:e029b655-95af-42d3-8b6a-18b3502441ce",
+        "IdentityPoolName": "codecontestf6f8446e_identitypool_f6f8446e__dev",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/code_contest/\"],\"LogoutURLs\":[\"http://localhost:3000/code_contest/\"]}",
+        "UserPoolName": "codecontestf6f8446e_userpool_f6f8446e"
+      },
+      "lastPushDirHash": "LrAFm06Wn9FZ5SAJrv9uAm9KI3g="
+    }
+  }
+}

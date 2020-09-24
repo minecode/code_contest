@@ -1,0 +1,16 @@
+{
+  "trigger": true,
+  "modules": [
+    "add-to-group"
+  ],
+  "parentResource": "codecontestac5b5e0d",
+  "functionName": "codecontestac5b5e0dPostConfirmation",
+  "resourceName": "codecontestac5b5e0dPostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "C:\\Users\\fhenriques\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "roleName": "codecontestac5b5e0dPostConfirmation",
+  "skipEdit": true,
+  "GROUP": "CodeContest"
+}

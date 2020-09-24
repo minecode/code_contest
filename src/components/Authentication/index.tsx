@@ -24,7 +24,7 @@ const Authentication: React.FC = () => {
         const params = new URLSearchParams();
         params.append('grant_type', 'authorization_code');
         params.append('client_id', '4s0k4rrrggv6utvjbq8fsbb2jj');
-        params.append('redirect_uri', 'http://localhost:3000/code_contest/authenticate');
+        params.append('redirect_uri', 'http://localhost:3000/authenticate');
         params.append('code', code);
         auth.post('/oauth2/token',params)
             .then(function (response) {
@@ -69,7 +69,7 @@ const Authentication: React.FC = () => {
         dispatch({ type: "LOGIN", data: newData });
     }
 
-    return <>{data.auth.authenticated ? <Redirect to = '/code_contest/' /> : <></>}</>
+    return <>{data.auth.authenticated ? <Redirect to = '/' /> : <></>}</>
 
 }
 

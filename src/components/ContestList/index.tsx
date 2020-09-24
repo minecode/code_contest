@@ -3,7 +3,8 @@ import ContestButton from '../ContestButton'
 import ChallengeButton from '../ChallengeButton'
 import { Data } from '../Interface'
 import { useDispatch, useSelector } from 'react-redux'
-import { ContainerList, Category } from './styles'
+import { ContainerList, Category } from './ContestList'
+import usePeristedState from '../../hooks/usePersistedState'
 import { Object } from 'aws-sdk/clients/s3'
 
 interface Props {
@@ -14,31 +15,39 @@ const ContestList: React.FC<Props> = ({contents}) => {
     const dispatch = useDispatch()
     const data = useSelector((state: Data) => state.data)
 
-    const [contestsActive, setContestsActive] = useState<string | undefined>('')
+
+	const dataTree = useSelector((state: Data) => state.data.tree)
+	const [challenge, setChallenge] = usePeristedState('challenge', '')
+
+	const [contestsActive, setContestsActive] = useState<string | undefined>(
+		challenge.split('/')[0]
+	)
 
     const handleSelectChange = useCallback(
-        (contest: string | undefined) => {
-            const newData = { data: data }
-            newData.data.selectedChallenge = { name: `${contest}` }
-            
-            dispatch({ type: 'CHALLENGE', data: newData })
-        },
-        [dispatch, data]
+		(contest: string | undefined) => {
+			setChallenge(`${contest}`)
+			const newData = { data: data }
+			newData.data.selectedChallenge = { name: `${contest}` }
+			dispatch({ type: 'CHALLENGE', data: newData })
+		},
+		[dispatch, data]
     )
-
+    
     const handleVisibleContest = (contest: string | undefined) => {
-        if (contestsActive === contest) {
-            setContestsActive('')
-            const newData = { data: data }
-            newData.data.selectedChallenge = { name: '' }
-            dispatch({ type: 'CHALLENGE', data: newData })
-        } else {
-            setContestsActive(contest)
-            const newData = { data: data }
-            newData.data.selectedChallenge = { name: `${contest}/` }
-            dispatch({ type: 'CHALLENGE', data: newData })
-        }
-    }
+		if (contestsActive === contest) {
+			setChallenge('')
+			setContestsActive('')
+			const newData = { data: data }
+			newData.data.selectedChallenge = { name: '' }
+			dispatch({ type: 'CHALLENGE', data: newData })
+		} else {
+			setChallenge(`${contest}/`)
+			setContestsActive(contest)
+			const newData = { data: data }
+			newData.data.selectedChallenge = { name: `${contest}/` }
+			dispatch({ type: 'CHALLENGE', data: newData })
+		}
+	}
 
     return (
         <ContainerList>
