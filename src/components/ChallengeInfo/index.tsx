@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdownWithHtml from 'react-markdown'
 import { Data } from '../Interface'
 import { titleCase } from '../Utils'
 import { useSelector } from 'react-redux'
@@ -10,12 +10,14 @@ import {
 	Info
 } from './ChallengeInfo'
 import AWS from 'aws-sdk'
+import toc from 'remark-toc'
+import CodeBlock from './CodeBlock'
+import MarkdownRender from './MarkdownRender'
 
 const ChallengeInfo: React.FC = () => {
 	const selectedChallenge = useSelector(
 		(state: Data) => state.data.selectedChallenge
 	)
-	console.log(selectedChallenge)
 	const [challengeIndex, setChallengeIndex] = useState<string>()
 
 	var s3 = new AWS.S3({
@@ -44,16 +46,20 @@ const ChallengeInfo: React.FC = () => {
 				<Title>
 					{titleCase(selectedChallenge.split('/')[1] as string)}
 				</Title>
+				<ContainerDescription>
+					<Info>
+						{challengeIndex && challengeIndex.length > 1 ? (
+							<>
+								<div className="result-pane">
+									<MarkdownRender source={challengeIndex} />
+								</div>
+							</>
+						) : (
+							''
+						)}
+					</Info>
+				</ContainerDescription>{' '}
 			</ContainerInfo>
-			<ContainerDescription>
-				<Info>
-					{challengeIndex && challengeIndex.length > 1 ? (
-						<ReactMarkdown source={challengeIndex} />
-					) : (
-						''
-					)}
-				</Info>
-			</ContainerDescription>
 		</>
 	)
 }
