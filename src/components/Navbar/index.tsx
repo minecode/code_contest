@@ -49,8 +49,7 @@ const Navbar: React.FC = () => {
 		dispatch({ type: 'LOGOUT', data: newData })
 		localStorage.setItem('auth', JSON.stringify(newData.data.auth))
 
-		window.location.href =
-			'https://codecontestf6f8446e-f6f8446e-dev.auth.us-east-1.amazoncognito.com/logout?client_id=4s0k4rrrggv6utvjbq8fsbb2jj&logout_uri=http://localhost:3000/'
+		window.location.href = process.env.NEXT_PUBLIC_AWS_LOGOUT || 'null'
 	}
 	const router = useRouter()
 
@@ -107,7 +106,7 @@ const Navbar: React.FC = () => {
 				>
 					<LoginButton
 						onClick={() => {
-							window.location.href = `https://codecontestf6f8446e-f6f8446e-dev.auth.us-east-1.amazoncognito.com/login?client_id=4s0k4rrrggv6utvjbq8fsbb2jj&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=http://localhost:3000/authenticate`
+							window.location.href = process.env.NEXT_PUBLIC_AWS_LOGIN || 'null'
 						}}
 					>
 						Login <LoginIcon />

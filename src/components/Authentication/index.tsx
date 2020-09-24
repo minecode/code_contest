@@ -11,8 +11,8 @@ const Authentication: React.FC = () => {
 	const getCode = (code: string) => {
 		const params = new URLSearchParams()
 		params.append('grant_type', 'authorization_code')
-		params.append('client_id', '4s0k4rrrggv6utvjbq8fsbb2jj')
-		params.append('redirect_uri', 'http://localhost:3000/authenticate')
+		params.append('client_id', process.env.NEXT_PUBLIC_CLIENT_ID || 'null')
+		params.append('redirect_uri', process.env.NEXT_PUBLIC_REDIRECT_URI || 'null')
 		params.append('code', code)
 		auth.post('/oauth2/token', params)
 			.then(function (response) {

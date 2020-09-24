@@ -33,9 +33,9 @@ const Home: React.FC = () => {
 
 	var s3 = new AWS.S3({
 		apiVersion: '2006-03-01',
-		region: 'us-east-1',
-		accessKeyId: 'AKIA3M6MCOV556RF6YQG',
-		secretAccessKey: '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'
+		region: process.env.NEXT_PUBLIC_AWS_REGION,
+		accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+		secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_ID
 	})
 
 	useEffect(() => {

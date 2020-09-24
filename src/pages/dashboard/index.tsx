@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container } from './Dashboard'
+import { Container } from '../../styles/pages/Dashboard'
 
 const Dashboard: React.FC = () => {
 
