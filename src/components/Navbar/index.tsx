@@ -1,25 +1,32 @@
-import React, { useEffect }   from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Container, Avatar, UserInfo, Dashboard, DashboardIcon, LogoutButton, LogoutIcon, LoginButton, LoginIcon } from './Navbar'
+import {
+	Container,
+	Avatar,
+	UserInfo,
+	Dashboard,
+	DashboardIcon,
+	LogoutButton,
+	LogoutIcon,
+	LoginButton,
+	LoginIcon
+} from './Navbar'
 import { Data } from '../Interface'
-import { useLocation } from 'react-router-dom'
 import Switch from 'react-switch'
 import { shade } from 'polished'
 import usePeristedState from '../../hooks/usePersistedState'
 import { ReCaptcha } from 'react-recaptcha-v3'
 
-
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch()
 	const data = useSelector((state: Data) => state.data)
-	const dataAuth = useSelector((state: Data) => state.data.auth)
+	const auth = useSelector((state: Data) => state.data.auth)
+	const authenticated = useSelector(
+		(state: Data) => state.data.auth.authenticated
+	)
 	const [theme, setTheme] = usePeristedState('theme', 'dark')
-	const [selectedChallengeName, setselectedChallengeName] = usePeristedState(
-		'challenge',
-		''
-    )
-    
-    useEffect(() => {
+
+	useEffect(() => {
 		if (theme === 'light') {
 			document.documentElement.classList.add('light')
 			document.documentElement.classList.remove('dark')
@@ -27,9 +34,6 @@ const Navbar: React.FC = () => {
 			document.documentElement.classList.remove('light')
 			document.documentElement.classList.add('dark')
 		}
-		const newData = { data: data }
-		newData.data.selectedChallenge = { name: `${selectedChallengeName}` }
-		dispatch({ type: 'CHALLENGE', data: newData })
 	}, [])
 
 	const verifyCallback = recaptchaToken => {
@@ -37,41 +41,64 @@ const Navbar: React.FC = () => {
 		// console.log(recaptchaToken, '<= your recaptcha token')
 	}
 
-    const location = useLocation();  
+	const logout = () => {
+		const newData = { data: data }
+		newData.data.auth.authenticated = false
+		dispatch({ type: 'LOGOUT', data: newData })
+		localStorage.setItem('auth', JSON.stringify(newData.data.auth))
+	}
 
-    return (
-        <Container>
-            <ReCaptcha
+	return (
+		<Container>
+			<ReCaptcha
 				sitekey="6LewbMwZAAAAAAeKjMMbilsGbBNGC5IRrdrXe-v9"
 				action="string"
 				verifyCallback={verifyCallback}
 			/>
-            {dataAuth.authenticated ? (
-                <div style={{display: 'flex', flex: 1, justifyContent: 'space-between'}}>
-                    <UserInfo>
-                        <span>Welcome, {dataAuth.user.name}!</span>
-                        <Avatar src={dataAuth.user.image} />
-                    </UserInfo>
-                    <div style={{display: 'flex'}}>
-                        <Dashboard to={location.pathname.includes('dashboard') ? '/' : '/dashboard'}>
+			{authenticated ? (
+				<div
+					style={{
+						display: 'flex',
+						flex: 1,
+						justifyContent: 'space-between'
+					}}
+				>
+					<UserInfo>
+						<span>Welcome, {auth.user.name}!</span>
+						<Avatar src={auth.user.image} />
+					</UserInfo>
+					<div style={{ display: 'flex' }}>
+						{/* <Dashboard to={location.pathname.includes('dashboard') ? '/' : '/dashboard'}>
                             <span>{location.pathname.includes('dashboard') ? "Home" : "Dashboard" }</span>
                             <DashboardIcon />
-                        </Dashboard>
-                        <LogoutButton onClick={() => {}}>
-                            Logout<LogoutIcon />
-                        </LogoutButton>
-                    </div>
-                </div>
-            ) : (
-                <div style={{display: 'flex', flex: 1, justifyContent: 'flex-end'}}>
-                     <LoginButton onClick={() => {
-                        window.location.href = `https://codecontestf6f8446e-f6f8446e-dev.auth.us-east-1.amazoncognito.com/login?client_id=4s0k4rrrggv6utvjbq8fsbb2jj&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=http://localhost:3000/authenticate`
-                        }}>
-                        Login<LoginIcon />
-                    </LoginButton>
-                </div>
-            )}
-            {theme ? (
+                        </Dashboard> */}
+						<LogoutButton
+							onClick={() => {
+								logout()
+							}}
+						>
+							Logout <LogoutIcon />
+						</LogoutButton>
+					</div>
+				</div>
+			) : (
+				<div
+					style={{
+						display: 'flex',
+						flex: 1,
+						justifyContent: 'flex-end'
+					}}
+				>
+					<LoginButton
+						onClick={() => {
+							window.location.href = `https://codecontestf6f8446e-f6f8446e-dev.auth.us-east-1.amazoncognito.com/login?client_id=4s0k4rrrggv6utvjbq8fsbb2jj&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=http://localhost:3000/authenticate`
+						}}
+					>
+						Login <LoginIcon />
+					</LoginButton>
+				</div>
+			)}
+			{theme ? (
 				<Switch
 					onChange={() => {
 						document.documentElement.classList.toggle('light')
@@ -90,8 +117,8 @@ const Navbar: React.FC = () => {
 			) : (
 				<></>
 			)}
-        </Container>
-    )
+		</Container>
+	)
 }
 
 export default Navbar
