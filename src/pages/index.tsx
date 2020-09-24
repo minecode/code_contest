@@ -61,12 +61,14 @@ const Home: React.FC = () => {
 			newData.data.auth = JSON.parse(authLocalStorage)
 		}
 		const selectedChallengeLocalStorage = localStorage.getItem('challenge')
-		if (selectedChallengeLocalStorage) {
+		if(authLocalStorage && selectedChallengeLocalStorage) {
+			newData.data.auth = JSON.parse(authLocalStorage)
 			newData.data.selectedChallenge = JSON.parse(
 				selectedChallengeLocalStorage
 			)
+			dispatch({ type: 'CHALLENGE', data: newData })
 		}
-		dispatch({ type: 'CHALLENGE', data: newData })
+	
 	}, [])
 
 	return (
@@ -79,9 +81,9 @@ const Home: React.FC = () => {
 					<Navbar />
 					<ContestList contents={contents} />
 					<Container>
-						{selectedChallenge &&
-						selectedChallenge.split('/').length > 1 &&
-						selectedChallenge.split('/')[1].length > 1 ? (
+						{selectedChallenge && selectedChallenge.name &&
+						selectedChallenge.name.split('/').length > 1 &&
+						selectedChallenge.name.split('/')[1].length > 1 ? (
 							<>
 								<ChallengeInfo />
 								<ChallengeCode />

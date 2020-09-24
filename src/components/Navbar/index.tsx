@@ -11,18 +11,17 @@ import {
 	LoginButton,
 	LoginIcon
 } from './Navbar'
+import auth from '../../services/auth'
 import { Data } from '../Interface'
 import Switch from 'react-switch'
 import { shade } from 'polished'
 import usePeristedState from '../../hooks/usePersistedState'
 import { ReCaptcha } from 'react-recaptcha-v3'
-import { useRouter } from 'next/router'
 
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch()
 	const data = useSelector((state: Data) => state.data)
-	console.log('data', data)
-	const auth = useSelector((state: Data) => state.data.auth)
+	const auth_var = useSelector((state: Data) => state.data.auth)
 	const authenticated = useSelector(
 		(state: Data) => state.data.auth.authenticated
 	)
@@ -48,8 +47,10 @@ const Navbar: React.FC = () => {
 		newData.data.auth.authenticated = false
 		dispatch({ type: 'LOGOUT', data: newData })
 		localStorage.setItem('auth', JSON.stringify(newData.data.auth))
+
+		window.location.href = 'https://codecontestf6f8446e-f6f8446e-dev.auth.us-east-1.amazoncognito.com/logout?client_id=4s0k4rrrggv6utvjbq8fsbb2jj&logout_uri=http://localhost:3000/'
+
 	}
-	const router = useRouter()
 
 	return (
 		<Container>
@@ -67,24 +68,14 @@ const Navbar: React.FC = () => {
 					}}
 				>
 					<UserInfo>
-						<span>Welcome, {auth.user.name}!</span>
-						<Avatar src={auth.user.image} />
+						<span>Welcome, {auth_var.user.name}!</span>
+						<Avatar src={auth_var.user.image} />
 					</UserInfo>
 					<div style={{ display: 'flex' }}>
-						<Dashboard
-							onClick={() => {
-								location.pathname.includes('dashboard')
-									? router.push('/')
-									: router.push('/dashboard')
-							}}
-						>
-							<span>
-								{location.pathname.includes('dashboard')
-									? 'Home'
-									: 'Dashboard'}
-							</span>
-							<DashboardIcon />
-						</Dashboard>
+						{/* <Dashboard to={location.pathname.includes('dashboard') ? '/' : '/dashboard'}>
+                            <span>{location.pathname.includes('dashboard') ? "Home" : "Dashboard" }</span>
+                            <DashboardIcon />
+                        </Dashboard> */}
 						<LogoutButton
 							onClick={() => {
 								logout()
