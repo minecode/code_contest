@@ -20,6 +20,7 @@ import { ReCaptcha } from 'react-recaptcha-v3'
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch()
 	const data = useSelector((state: Data) => state.data)
+	console.log('data', data)
 	const auth = useSelector((state: Data) => state.data.auth)
 	const authenticated = useSelector(
 		(state: Data) => state.data.auth.authenticated

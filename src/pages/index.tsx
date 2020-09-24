@@ -55,12 +55,17 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		const newData = { data: data }
+
 		const authLocalStorage = localStorage.getItem('auth')
+		if (authLocalStorage) {
+			newData.data.auth = JSON.parse(authLocalStorage)
+		}
 		const selectedChallengeLocalStorage = localStorage.getItem('challenge')
-		newData.data.auth = JSON.parse(authLocalStorage)
-		newData.data.selectedChallenge = JSON.parse(
-			selectedChallengeLocalStorage
-		)
+		if (selectedChallengeLocalStorage) {
+			newData.data.selectedChallenge = JSON.parse(
+				selectedChallengeLocalStorage
+			)
+		}
 		dispatch({ type: 'CHALLENGE', data: newData })
 	}, [])
 
