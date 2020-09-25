@@ -6,6 +6,7 @@ export const ContainerDescription = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	background-color: var(--primary);
+	width: 100%;
 `
 
 export const Info = styled.div`
@@ -24,6 +25,7 @@ export const ContainerInfo = styled.div`
 	box-shadow: var(--secondary) 0px 1px 0px 0px;
 	z-index: 2;
 	min-height: 46px;
+	flex-direction: column;
 `
 
 export const Title = styled.h1`
