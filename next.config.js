@@ -6,9 +6,6 @@ module.exports = withImages({
 
 module.exports = {
 	basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-	assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH
-}
-
-module.exports = {
-  trailingSlash: true,
+	assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH,
+	trailingSlash: true,
 }
