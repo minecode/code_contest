@@ -7,7 +7,7 @@ export const Grid = styled.div`
 	grid-template-areas:
 		'LG LG'
 		'CL CI'
-		'CL CD'
+		'CL CI'
 		'CL DF';
 	@media (min-width: 1024px) {
 		grid-template-columns: 20% 65% 15%;
@@ -15,7 +15,7 @@ export const Grid = styled.div`
 		grid-template-areas:
 			'LG LG LG'
 			'CL CI UL'
-			'CL CD UL'
+			'CL CI UL'
 			'CL DF UL';
 	}
 	@media (min-width: 1366px) {

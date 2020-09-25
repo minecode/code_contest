@@ -41,26 +41,24 @@ const ChallengeInfo: React.FC = () => {
 	}, [selectedChallenge])
 
 	return (
-		<>
-			<ContainerInfo>
-				<Title>
-					{titleCase(selectedChallenge.split('/')[1] as string)}
-				</Title>
-				<ContainerDescription>
-					<Info>
-						{challengeIndex && challengeIndex.length > 1 ? (
-							<>
-								<div className="result-pane">
-									<MarkdownRender source={challengeIndex} />
-								</div>
-							</>
-						) : (
-							''
-						)}
-					</Info>
-				</ContainerDescription>{' '}
-			</ContainerInfo>
-		</>
+		<ContainerInfo>
+			<Title>
+				{titleCase(selectedChallenge.split('/')[1] as string)}
+			</Title>
+			<ContainerDescription>
+				<Info>
+					{challengeIndex && challengeIndex.length > 1 ? (
+						<>
+							<div className="result-pane">
+								<MarkdownRender source={challengeIndex} />
+							</div>
+						</>
+					) : (
+						''
+					)}
+				</Info>
+			</ContainerDescription>{' '}
+		</ContainerInfo>
 	)
 }
 
