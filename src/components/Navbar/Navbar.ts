@@ -46,13 +46,10 @@ export const Dashboard = styled.button`
 	height: 35px;
 	border-radius: 4px;
 	background: var(--link);
-	color: white;
 	border: 0px transparent;
 	text-align: center;
 	&:hover {
 		background: var(--discord);
-		text-decoration: none;
-		color: var(--white);
 	}
 	> span {
 		display: none;
@@ -78,11 +75,11 @@ export const LogoutButton = styled.button`
 		}
 	}
 	margin: 5px;
-	width: 65px;
+	width: 35px;
 	height: 35px;
 	border-radius: 4px;
 	background: var(--link);
-	color: white;
+	color: var(--white);
 	border: 0px transparent;
 	text-align: center;
 	&:hover {
@@ -101,11 +98,11 @@ export const LoginButton = styled.button`
 		}
 	}
 	margin: 5px;
-	width: 65px;
+	width: 35px;
 	height: 35px;
 	border-radius: 4px;
 	background: var(--link);
-	color: white;
+	color: var(--white);
 	border: 0px transparent;
 	text-align: center;
 	&:hover {

@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
 								logout()
 							}}
 						>
-							Logout <LogoutIcon />
+							<span>Logout</span> <LogoutIcon />
 						</LogoutButton>
 					</div>
 				</div>
@@ -106,10 +106,11 @@ const Navbar: React.FC = () => {
 				>
 					<LoginButton
 						onClick={() => {
-							window.location.href = process.env.NEXT_PUBLIC_AWS_LOGIN || 'null'
+							window.location.href =
+								process.env.NEXT_PUBLIC_AWS_LOGIN || 'null'
 						}}
 					>
-						Login <LoginIcon />
+						<span>Login</span> <LoginIcon />
 					</LoginButton>
 				</div>
 			)}
