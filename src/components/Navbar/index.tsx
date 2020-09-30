@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
 								logout()
 							}}
 						>
-							Logout <LogoutIcon />
+							<span>Logout</span> <LogoutIcon />
 						</LogoutButton>
 					</div>
 				</div>

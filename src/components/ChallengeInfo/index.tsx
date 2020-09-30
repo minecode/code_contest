@@ -28,6 +28,7 @@ const ChallengeInfo: React.FC = () => {
 	})
 
 	useEffect(() => {
+		setChallengeIndex('')
 		var params = {
 			Bucket: 'code-contest',
 			Key: `${selectedChallenge?.split(' ').join('_')}/index.md`
