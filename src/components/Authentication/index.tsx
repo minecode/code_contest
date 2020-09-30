@@ -1,81 +1,83 @@
-import React, { useEffect, useState } from 'react'
-import auth from '../../services/auth'
-import base64 from 'base-64'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+import Login from '../Login'
+import Register from '../Register'
+import Forgot from '../Forgot'
+import Validate from '../Validate'
+import { Container, Form } from '../../styles/pages/authenticate'
+import { Typography, Row, Col, Alert } from 'antd'
+import usePersistedState from '../../hooks/usePersistedState'
+
+const { Title } = Typography
 
 const Authentication: React.FC = () => {
 	const router = useRouter()
 	const [access_token, setAccess_token] = useState<string>()
 	const [refresh_token, setRefresh_token] = useState<string>()
+	const [state, setState] = useState<string>('login')
 
-	const getCode = (code: string) => {
-		const params = new URLSearchParams()
-		params.append('grant_type', 'authorization_code')
-		params.append('client_id', process.env.NEXT_PUBLIC_CLIENT_ID || 'null')
-		params.append('redirect_uri', process.env.NEXT_PUBLIC_REDIRECT_URI || 'null')
-		params.append('code', code)
-		auth.post('/oauth2/token', params)
-			.then(function (response) {
-				// handle success
-				if (
-					response.data?.access_token &&
-					response.data?.refresh_token
-				) {
-					setAccess_token(base64.encode(response.data.access_token))
-					setRefresh_token(response.data.refresh_token)
-				}
-			})
-			.catch(function (error) {
-				// handle error
-				console.log('Error ', error)
-			})
-	}
-
-	const setData = (dataResponse: any) => {
-		localStorage.setItem(
-			'auth',
-			JSON.stringify({
-				authenticated: true,
-				user: {
-					id: dataResponse.data.email,
-					name: dataResponse.data.name.split(' ').shift(),
-					surname: dataResponse.data.name.split(' ').pop(),
-					image: dataResponse.data.picture
-				},
-				token: access_token ? access_token : ''
-			})
-		)
-		router.push('/')
-	}
-
-	useEffect(() => {
-		if (access_token) {
-			auth.get('/oauth2/userInfo', {
-				headers: {
-					Authorization: 'Bearer ' + base64.decode(access_token)
-				}
-			})
-				.then(function (responseInfo) {
-					setData(responseInfo)
-				})
-				.catch(function (errorInfo) {
-					console.log(errorInfo)
-				})
-		}
-	}, [access_token])
-
-	useEffect(() => {
-		const params = new URLSearchParams(window.location.search)
-		const code = params.get('code')
-		if (code) {
-			getCode(code)
-		}
-	}, [])
+  const [loggedIn, setLoggedIn] = usePersistedState('loggedIn', false)
+	
 
 	return (
-		<>
-			<p>Redirecting...</p>
-		</>
+		<Container>
+			{!loggedIn && <Form>
+				<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+					<Col xs={24} sm={24} md={12} lg={12} xl={12}>
+						<Row justify='start'>
+							<Title style={{color: 'var(--gray)'}}>
+								Login
+							</Title>
+						</Row>
+						<Row style={{minWidth: '100%'}}>
+								<Login setState={setState}/>
+						</Row>
+					</Col>
+					<Col xs={24} sm={24} md={12} lg={12} xl={12}>
+						{state === 'validate_code' ? 
+						<>
+							<Row justify='start'>
+								<Title style={{color: 'var(--gray)'}}>
+									Validate code
+								</Title>
+							</Row>
+							<Row style={{minWidth: '100%'}}>
+									<Validate setState={setState} />
+							</Row>
+						</> 
+						: state === 'success_code' ? 
+						<>
+							<Row justify='start'>
+								<Title style={{color: 'var(--gray)'}}>
+									Validate code
+								</Title>
+							</Row>
+							<Row style={{minWidth: '100%'}}>
+								<Alert
+									style={{minWidth: '100%'}}
+									message="Success"
+									description="Your validation code has been introduced with success! You can now login with your account"
+									type="success"
+									showIcon
+								/>
+							</Row>
+						</>
+					 	:
+						<>
+							<Row justify='start'>
+								<Title style={{color: 'var(--gray)'}}>
+									Register
+								</Title>
+							</Row>
+							<Row style={{minWidth: '100%'}}>
+									<Register setState={setState} />
+							</Row>
+						</>
+						}
+					</Col>
+				</Row>
+			</Form>}
+		</Container>
 	)
 }
 

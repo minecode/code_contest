@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Dashboard as ds } from '@styled-icons/material-outlined/Dashboard'
 import { Logout } from 'styled-icons/heroicons-outline'
-import { Login } from 'styled-icons/material'
+import { Login, Home } from 'styled-icons/material'
 
 export const Container = styled.div`
 	grid-area: LG;
@@ -61,13 +61,7 @@ export const Dashboard = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-`
-
-export const DashboardIcon = styled(ds)`
-	width: 20px;
-	height: 20px;
-	margin-left: 5px;
-	color: var(--white);
+	cursor: pointer;
 `
 
 export const LogoutButton = styled.button`
@@ -91,6 +85,10 @@ export const LogoutButton = styled.button`
 	> span {
 		display: none;
 	}
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
 `
 
 export const LoginButton = styled.button`
@@ -114,16 +112,40 @@ export const LoginButton = styled.button`
 	> span {
 		display: none;
 	}
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+`
+
+export const DashboardIcon = styled(ds)`
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+	color: var(--white);
+	cursor: pointer;
 `
 
 export const LogoutIcon = styled(Logout)`
 	width: 20px;
 	height: 20px;
 	color: var(--white);
+	margin-left: 10px;
+	cursor: pointer;
 `
 
 export const LoginIcon = styled(Login)`
 	width: 20px;
 	height: 20px;
 	color: var(--white);
+	margin-left: 10px;
+	cursor: pointer;
+`
+
+export const HomeIcon = styled(Home)`
+	width: 20px;
+	height: 20px;
+	color: var(--white);
+	margin-left: 10px;
+	cursor: pointer;
 `

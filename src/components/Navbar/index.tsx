@@ -9,13 +9,13 @@ import {
 	LogoutButton,
 	LogoutIcon,
 	LoginButton,
-	LoginIcon
+	LoginIcon,
+	HomeIcon
 } from './Navbar'
-import auth from '../../services/auth'
 import { Data } from '../Interface'
 import Switch from 'react-switch'
 import { shade } from 'polished'
-import usePeristedState from '../../hooks/usePersistedState'
+import usePersistedState from '../../hooks/usePersistedState'
 import { ReCaptcha } from 'react-recaptcha-v3'
 import { useRouter } from 'next/router'
 
@@ -23,10 +23,11 @@ const Navbar: React.FC = () => {
 	const dispatch = useDispatch()
 	const data = useSelector((state: Data) => state.data)
 	const auth_var = useSelector((state: Data) => state.data.auth)
-	const authenticated = useSelector(
-		(state: Data) => state.data.auth.authenticated
-	)
-	const [theme, setTheme] = usePeristedState('theme', 'dark')
+	const [loggedIn, setLoggedIn] = usePersistedState('loggedIn', false);
+	const [accessToken, setAccessToken] = usePersistedState('access_token', '')
+  const [refreshToken, setRefreshToken] = usePersistedState('refresh_token', '') 
+  const [idToken, setIdToken] = usePersistedState('user_info', null)
+	const [theme, setTheme] = usePersistedState('theme', 'dark')
 
 	useEffect(() => {
 		if (theme === 'light') {
@@ -38,20 +39,24 @@ const Navbar: React.FC = () => {
 		}
 	}, [])
 
+	const router = useRouter()
+
 	const verifyCallback = recaptchaToken => {
 		// Here you will get the final recaptchaToken!!!
 		// console.log(recaptchaToken, '<= your recaptcha token')
 	}
 
-	const logout = () => {
-		const newData = { data: data }
-		newData.data.auth.authenticated = false
-		dispatch({ type: 'LOGOUT', data: newData })
-		localStorage.setItem('auth', JSON.stringify(newData.data.auth))
+	useEffect(() => {
+		console.log(idToken)
+	}, [idToken])
 
-		window.location.href = process.env.NEXT_PUBLIC_AWS_LOGOUT || 'null'
+	const logout = () => {
+		setIdToken('')
+		setAccessToken('')
+		setRefreshToken('')
+		setLoggedIn(false)
+		router.push('/')
 	}
-	const router = useRouter()
 
 	return (
 		<Container>
@@ -60,7 +65,7 @@ const Navbar: React.FC = () => {
 				action="string"
 				verifyCallback={verifyCallback}
 			/>
-			{authenticated ? (
+			{loggedIn ? (
 				<div
 					style={{
 						display: 'flex',
@@ -69,8 +74,8 @@ const Navbar: React.FC = () => {
 					}}
 				>
 					<UserInfo>
-						<span>Welcome, {auth_var.user.name}!</span>
-						<Avatar src={auth_var.user.image} />
+						<span>Welcome, {idToken.given_name}!</span>
+						<Avatar src={idToken.picture} />
 					</UserInfo>
 					<div style={{ display: 'flex' }}>
 						<Dashboard
@@ -106,10 +111,17 @@ const Navbar: React.FC = () => {
 				>
 					<LoginButton
 						onClick={() => {
-							window.location.href = process.env.NEXT_PUBLIC_AWS_LOGIN || 'null'
+							location.pathname.includes('authenticate')
+									? router.push('./')
+									: router.push('./authenticate')
 						}}
 					>
-						Login <LoginIcon />
+						<span>
+						{location.pathname.includes('authenticate')
+									? 'Home'
+									: 'Login'} 
+						{location.pathname.includes('authenticate') ? <HomeIcon /> : <LoginIcon /> }
+						</span>
 					</LoginButton>
 				</div>
 			)}

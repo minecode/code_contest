@@ -15,15 +15,14 @@ import {
 import 'ace-builds/src-noconflict/mode-python'
 import 'ace-builds/src-noconflict/theme-dracula'
 import AWS from 'aws-sdk'
+import usePersistedState from '../../hooks/usePersistedState'
 
 const ChallengeCode: React.FC = () => {
 	const auth = useSelector((state: Data) => state.data.auth)
 	const selectedChallenge = useSelector(
 		(state: Data) => state.data.selectedChallenge
 	)
-	const authenticated = useSelector(
-		(state: Data) => state.data.auth.authenticated
-	)
+	const [authenticated, setAuthenticated] = usePersistedState('loggedIn', false)
 	const [show, setShow] = useState(false)
 	const [fileName, setFileName] = useState('')
 	const [inProgress, setInProgress] = useState(false)

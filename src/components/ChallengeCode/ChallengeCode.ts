@@ -15,6 +15,7 @@ export const SubmitButton = styled.button`
 		background: var(--link);
 		cursor: pointer;
 	}
+	color: var(--white);
 `
 
 export const ChallengeCodeFiles = styled.div`
