@@ -21,9 +21,10 @@ const Authentication: React.FC = () => {
 
 	return (
 		<Container>
-			{!loggedIn && <Form>
+			{!loggedIn && 
+			<Form>
 				<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-					<Col xs={24} sm={24} md={12} lg={12} xl={12}>
+					<Col xs={24} sm={24} md={11} lg={11} xl={11}>
 						<Row justify='start'>
 							<Title style={{color: 'var(--gray)'}}>
 								Login
@@ -33,7 +34,12 @@ const Authentication: React.FC = () => {
 								<Login setState={setState}/>
 						</Row>
 					</Col>
-					<Col xs={24} sm={24} md={12} lg={12} xl={12}>
+					<Col xs={0} sm={0} md={1} lg={1} xl={1}>
+						<div style={{width: 1, backgroundColor: 'var(--gray)', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+							<div style={{width: 'auto', height: 'auto', borderRadius: '50%', backgroundColor: 'var(--primary)', color: 'var(--gray)', fontSize: 20}}>Or</div>
+						</div>
+					</Col>
+					<Col xs={24} sm={24} md={11} lg={11} xl={11}>
 						{state === 'validate_code' ? 
 						<>
 							<Row justify='start'>

@@ -155,6 +155,10 @@ const ChallengeCode: React.FC = () => {
 		// eslint-disable-next-line
 	}, [selectedChallenge])
 
+	useEffect(() => {
+		console.log(authenticated)
+	}, [authenticated])
+
 	return (
 		<Container>
 			{authenticated ? (

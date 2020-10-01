@@ -46,16 +46,11 @@ const Navbar: React.FC = () => {
 		// console.log(recaptchaToken, '<= your recaptcha token')
 	}
 
-	useEffect(() => {
-		console.log(idToken)
-	}, [idToken])
-
 	const logout = () => {
 		setIdToken('')
 		setAccessToken('')
 		setRefreshToken('')
 		setLoggedIn(false)
-		router.push('/')
 	}
 
 	return (
@@ -75,7 +70,7 @@ const Navbar: React.FC = () => {
 				>
 					<UserInfo>
 						<span>Welcome, {idToken.given_name}!</span>
-						<Avatar src={idToken.picture} />
+						<Avatar src={idToken.picture} style={{objectFit: 'cover'}}/>
 					</UserInfo>
 					<div style={{ display: 'flex' }}>
 						<Dashboard

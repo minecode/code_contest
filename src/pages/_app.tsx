@@ -5,6 +5,7 @@ import GlobalStyles from '../styles/GlobalStyles'
 import { Provider } from 'react-redux'
 import { loadReCaptcha } from 'react-recaptcha-v3'
 import 'antd/dist/antd.css'
+import '../styles/theme.css'
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 	useEffect(() => {
