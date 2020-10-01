@@ -41,6 +41,9 @@ export const Dashboard = styled.button`
 			display: initial !important;
 		}
 	}
+	> span {
+		margin-right: 10px;
+	}
 	margin: 5px;
 	width: 35px;
 	height: 35px;
@@ -68,6 +71,9 @@ export const LogoutButton = styled.button`
 			display: initial !important;
 		}
 	}
+	> span {
+		margin-right: 10px;
+	}
 	margin: 5px;
 	width: 35px;
 	height: 35px;
@@ -94,6 +100,9 @@ export const LoginButton = styled.button`
 		> span {
 			display: initial !important;
 		}
+	}
+	> span {
+		margin-right: 10px;
 	}
 	margin: 5px;
 	width: 35px;

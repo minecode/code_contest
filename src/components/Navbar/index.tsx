@@ -85,9 +85,9 @@ const Navbar: React.FC = () => {
 						>
 							<span>
 								{location.pathname.includes('dashboard')
-									? 'Home'
-									: 'Dashboard'}
-							</span>{' '}
+									? 'Home '
+									: 'Dashboard '}
+							</span>
 							<DashboardIcon />
 						</Dashboard>
 						<LogoutButton
@@ -95,7 +95,8 @@ const Navbar: React.FC = () => {
 								logout()
 							}}
 						>
-							<span>Logout</span> <LogoutIcon />
+							<span>Logout</span>
+							<LogoutIcon />
 						</LogoutButton>
 					</div>
 				</div>
@@ -118,7 +119,7 @@ const Navbar: React.FC = () => {
 							{location.pathname.includes('authenticate')
 								? 'Home'
 								: 'Login'}
-						</span>{' '}
+						</span>
 						{location.pathname.includes('authenticate') ? (
 							<HomeIcon />
 						) : (
