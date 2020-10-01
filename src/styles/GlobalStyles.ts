@@ -15,6 +15,10 @@ export default createGlobalStyle`
         font-family: 'Roboto', sans-serif;
     }
 
+	h1, h2 {
+		color: var(--white)
+	}
+
 	.light {
 		--primary: #f1f1f1;
 		--secondary: #e1e1e1;

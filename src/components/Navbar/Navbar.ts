@@ -54,7 +54,7 @@ export const Dashboard = styled.button`
 	> span {
 		display: none;
 	}
-	color: var(--white);
+	color: #fff;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -73,7 +73,7 @@ export const LogoutButton = styled.button`
 	height: 35px;
 	border-radius: 4px;
 	background: var(--link);
-	color: var(--white);
+	color: #fff;
 	border: 0px transparent;
 	text-align: center;
 	&:hover {
@@ -100,7 +100,7 @@ export const LoginButton = styled.button`
 	height: 35px;
 	border-radius: 4px;
 	background: var(--link);
-	color: var(--white);
+	color: #fff;
 	border: 0px transparent;
 	text-align: center;
 	&:hover {
@@ -118,31 +118,31 @@ export const LoginButton = styled.button`
 export const DashboardIcon = styled(ds)`
 	width: 20px;
 	height: 20px;
-	margin-left: 10px;
-	color: var(--white);
+	/* margin-left: 10px; */
+	color: #fff;
 	cursor: pointer;
 `
 
 export const LogoutIcon = styled(Logout)`
 	width: 20px;
 	height: 20px;
-	color: var(--white);
-	margin-left: 10px;
+	color: #fff;
+	/* margin-left: 10px; */
 	cursor: pointer;
 `
 
 export const LoginIcon = styled(Login)`
 	width: 20px;
 	height: 20px;
-	color: var(--white);
-	margin-left: 10px;
+	color: #fff;
+	/* margin-left: 10px; */
 	cursor: pointer;
 `
 
 export const HomeIcon = styled(Home)`
 	width: 20px;
 	height: 20px;
-	color: var(--white);
-	margin-left: 10px;
+	color: #fff;
+	/* margin-left: 10px; */
 	cursor: pointer;
 `
