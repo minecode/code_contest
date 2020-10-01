@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import AWS from 'aws-sdk'
-import usePersistedState from '../../hooks/usePersistedState'
 import jwt_decode from 'jwt-decode'
 import { useRouter } from 'next/router'
+import createPersistedState from 'use-persisted-state';
 
 interface Props {
   setState: any
@@ -14,12 +14,17 @@ const Login: React.FC<Props> = (props) => {
 
   let setState = props.setState
 
-	const router = useRouter()
-
-  const [accessToken, setAccessToken] = usePersistedState('access_token', '')
-  const [refreshToken, setRefreshToken] = usePersistedState('refresh_token', '') 
-  const [idToken, setIdToken] = usePersistedState('user_info', null)
-  const [loggedIn, setLoggedIn] = usePersistedState('loggedIn', false)
+  const router = useRouter()
+  
+  const useloggedInState = createPersistedState('loggedIn');
+	const useAccessTokenState = createPersistedState('accessToken');
+	const useRefreshTokenState = createPersistedState('refreshToken');
+	const useIdTokenState = createPersistedState('idToken');
+	
+	const [loggedIn, setLoggedIn] = useloggedInState(false)
+	const [accessToken, setAccessToken] = useAccessTokenState('access_token')
+	const [refreshToken, setRefreshToken] = useRefreshTokenState('refresh_token')
+	const [idToken, setIdToken] = useIdTokenState('idToken')
 
   const [error, setError] = useState(false)
 

@@ -15,22 +15,22 @@ import {
 import { Data } from '../Interface'
 import Switch from 'react-switch'
 import { shade } from 'polished'
-import usePersistedState from '../../hooks/usePersistedState'
 import { ReCaptcha } from 'react-recaptcha-v3'
 import { useRouter } from 'next/router'
+import createPersistedState from 'use-persisted-state';
 
 const Navbar: React.FC = () => {
-	const dispatch = useDispatch()
-	const data = useSelector((state: Data) => state.data)
-	const auth_var = useSelector((state: Data) => state.data.auth)
-	const [loggedIn, setLoggedIn] = usePersistedState('loggedIn', false)
-	const [accessToken, setAccessToken] = usePersistedState('access_token', '')
-	const [refreshToken, setRefreshToken] = usePersistedState(
-		'refresh_token',
-		''
-	)
-	const [idToken, setIdToken] = usePersistedState('user_info', null)
-	const [theme, setTheme] = usePersistedState('theme', 'dark')
+	const useloggedInState = createPersistedState('loggedIn');
+	const useAccessTokenState = createPersistedState('accessToken');
+	const useRefreshTokenState = createPersistedState('refreshToken');
+	const useIdTokenState = createPersistedState('idToken');
+	const useThemeState = createPersistedState('theme');
+	
+	const [loggedIn, setLoggedIn] = useloggedInState(false)
+	const [accessToken, setAccessToken] = useAccessTokenState('access_token')
+	const [refreshToken, setRefreshToken] = useRefreshTokenState('refresh_token')
+	const [idToken, setIdToken] = useIdTokenState('idToken')
+	const [theme, setTheme] = useThemeState('theme')
 
 	useEffect(() => {
 		if (theme === 'light') {

@@ -61,7 +61,8 @@
 		"swr": "^0.3.0",
 		"ts-node-dev": "^1.0.0-pre.56",
 		"tsconfig-paths": "^3.9.0",
-		"typescript": "^3.9.7"
+		"typescript": "^3.9.7",
+		"use-persisted-state": "^0.3.0"
 	},
 	"scripts": {
 		"gh-pages": "gh-pages -d out -t true",

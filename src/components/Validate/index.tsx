@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 import AWS from 'aws-sdk'
-import usePersistedState from '../../hooks/usePersistedState'
+
 interface Props {
   setState: any
 }
 
 const Validate: React.FC<Props> = (props) => {
+
+  const [success, setSuccess] = useState(false)
 
   let setState = props.setState
 
@@ -33,44 +35,58 @@ const Validate: React.FC<Props> = (props) => {
       Username: localStorage.getItem('@code_contest:username'),
     };
     cognitoidentityserviceprovider.confirmSignUp(params, function(err, data) {
-      if (err) console.log(err, err.stack); // an error occurred
-      else     console.log(data);           // successful response
+      if (err) {
+        setSuccess(false)
+        console.log(err, err.stack);
+      }// an error occurred
+      else{
+        setSuccess(true)
+        setState('success_code')
+        console.log(data);
+      }           // successful response
     });
   }
 
   return  (
-    <Form
-      name="normal_login"
-      className="login-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      style={{minWidth: '100%'}}
-    >
-      <Form.Item
-        name="code"
-        rules={[{ required: true, message: 'Please input your code!' }]}
+    <>
+      {success && <Alert
+									style={{minWidth: '100%'}}
+									message="Error"
+									description="Your validation code has incorrect."
+									type="error"
+									showIcon
+								/>
+      }
+      <Form
+        name="normal_login"
+        className="login-form"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        style={{minWidth: '100%'}}
       >
-        <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Code" />
-      </Form.Item>
-      
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Confirm
-        </Button>
-        {' '}or{' '}<a onClick={() => {
-          var params = {
-            ClientId: process.env.NEXT_PUBLIC_CLIENT_ID, 
-            Username: localStorage.getItem('@code_contest:username'),
-          };
-          cognitoidentityserviceprovider.resendConfirmationCode(params, function(err, data) {
-            if (err) console.log(err, err.stack); // an error occurred
-            else {
-              setState("success_code")
-            }         // successful response
-          });
-        }}>Send new code now!</a>
-      </Form.Item>
-    </Form>
+        <Form.Item
+          name="code"
+          rules={[{ required: true, message: 'Please input your code!' }]}
+        >
+          <Input prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Code" />
+        </Form.Item>
+        
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            Confirm
+          </Button>
+          {' '}or{' '}<a onClick={() => {
+            var params = {
+              ClientId: process.env.NEXT_PUBLIC_CLIENT_ID, 
+              Username: localStorage.getItem('@code_contest:username'),
+            };
+            cognitoidentityserviceprovider.resendConfirmationCode(params, function(err, data) {
+              if (err) console.log(err, err.stack); // an error occurred 
+            });
+          }}>Send new code now!</a>
+        </Form.Item>
+      </Form>
+    </>
   )
 
 }

@@ -6,8 +6,11 @@ import {
 	LoginButton,
 	LoginIcon
 } from './LoginMessage'
+import { useRouter } from 'next/router'
 
 const LoginMessage: React.FC = () => {
+	const router = useRouter()
+
 	return (
 		<LM>
 			<Row>
@@ -16,7 +19,7 @@ const LoginMessage: React.FC = () => {
 						You need to{' '}
 						<LoginButton
 							onClick={() => {
-								window.location.href = process.env.NEXT_PUBLIC_AWS_LOGIN || 'null'
+							router.push('/authenticate')
 							}}
 						>
 							Login <LoginIcon />

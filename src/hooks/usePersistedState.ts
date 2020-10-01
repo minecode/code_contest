@@ -12,11 +12,25 @@ function usePersistedState(key: string, initialState: any): Response {
 		}
 	})
 
-	useEffect(() => {
-		localStorage.setItem(key, JSON.stringify(state))
-	}, [key, state])
+	const setValue = value => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore = value instanceof Function ? value(state) : value;
+      // Save state
+      setState(valueToStore);
+      // Save to local storage
+      localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
 
-	return [state, setState]
+	// useEffect(() => {
+	// 	localStorage.setItem(key, JSON.stringify(state))
+	// }, [key, state])
+
+	return [state, setValue]
 }
 
 export default usePersistedState

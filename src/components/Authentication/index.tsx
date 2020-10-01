@@ -6,7 +6,7 @@ import Forgot from '../Forgot'
 import Validate from '../Validate'
 import { Container, Form } from '../../styles/pages/authenticate'
 import { Typography, Row, Col, Alert } from 'antd'
-import usePersistedState from '../../hooks/usePersistedState'
+import createPersistedState from 'use-persisted-state';
 
 const { Title } = Typography
 
@@ -16,8 +16,9 @@ const Authentication: React.FC = () => {
 	const [refresh_token, setRefresh_token] = useState<string>()
 	const [state, setState] = useState<string>('login')
 
-  const [loggedIn, setLoggedIn] = usePersistedState('loggedIn', false)
+	const useloggedInState = createPersistedState('loggedIn');
 	
+	const [loggedIn, setLoggedIn] = useloggedInState(false)
 
 	return (
 		<Container>
