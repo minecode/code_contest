@@ -23,10 +23,13 @@ const Navbar: React.FC = () => {
 	const dispatch = useDispatch()
 	const data = useSelector((state: Data) => state.data)
 	const auth_var = useSelector((state: Data) => state.data.auth)
-	const [loggedIn, setLoggedIn] = usePersistedState('loggedIn', false);
+	const [loggedIn, setLoggedIn] = usePersistedState('loggedIn', false)
 	const [accessToken, setAccessToken] = usePersistedState('access_token', '')
-  const [refreshToken, setRefreshToken] = usePersistedState('refresh_token', '') 
-  const [idToken, setIdToken] = usePersistedState('user_info', null)
+	const [refreshToken, setRefreshToken] = usePersistedState(
+		'refresh_token',
+		''
+	)
+	const [idToken, setIdToken] = usePersistedState('user_info', null)
 	const [theme, setTheme] = usePersistedState('theme', 'dark')
 
 	useEffect(() => {
@@ -84,7 +87,7 @@ const Navbar: React.FC = () => {
 								{location.pathname.includes('dashboard')
 									? 'Home'
 									: 'Dashboard'}
-							</span>
+							</span>{' '}
 							<DashboardIcon />
 						</Dashboard>
 						<LogoutButton
@@ -107,16 +110,20 @@ const Navbar: React.FC = () => {
 					<LoginButton
 						onClick={() => {
 							location.pathname.includes('authenticate')
-									? router.push('./')
-									: router.push('./authenticate')
+								? router.push('./')
+								: router.push('./authenticate')
 						}}
 					>
 						<span>
-						{location.pathname.includes('authenticate')
-									? 'Home'
-									: 'Login'} 
-						{location.pathname.includes('authenticate') ? <HomeIcon /> : <LoginIcon /> }
-						</span>
+							{location.pathname.includes('authenticate')
+								? 'Home'
+								: 'Login'}
+						</span>{' '}
+						{location.pathname.includes('authenticate') ? (
+							<HomeIcon />
+						) : (
+							<LoginIcon />
+						)}
 					</LoginButton>
 				</div>
 			)}
