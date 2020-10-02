@@ -3,6 +3,7 @@ import base64 from 'base-64'
 import { useSelector } from 'react-redux'
 import { User, UserApi, Data } from '../Interface'
 import { Container, Role, User as UserElem, Avatar } from './UserList'
+import AWS from 'aws-sdk'
 
 export interface Props {
 	user: {
@@ -14,6 +15,8 @@ export interface Props {
 }
 
 const UserRow: React.FC<Props> = ({ user, score }) => {
+	
+
 	return (
 		<UserElem>
 			<Avatar src={base64.decode(user.imageUrl)} />
@@ -26,6 +29,29 @@ const UserRow: React.FC<Props> = ({ user, score }) => {
 }
 
 const UserList: React.FC = () => {
+
+	var dynamodb = new AWS.DynamoDB({
+		apiVersion: '2012-08-10',
+		region: process.env.NEXT_PUBLIC_AWS_REGION,
+		accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+		secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_ID
+	})
+
+	var params = {
+		KeyConditionExpression: "contest = :contest and challenge = :challenge",
+		TableName: "code-contest-pontuations",
+		ExpressionAttributeValues: {
+			":contest": {'S': "hackacity"},
+			":challenge": {'S': "challenge_2"},
+		}
+	};
+
+	dynamodb.query(params, function(err, data) {
+		if (err) console.log(err, err.stack); // an error occurred
+		else     console.log(data);           // successful response
+	});
+
+
 	const globalScore: User[] = useSelector(
 		(state: Data) => state.data.globalScore
 	)

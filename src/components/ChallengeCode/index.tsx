@@ -16,14 +16,15 @@ import 'ace-builds/src-noconflict/mode-python'
 import 'ace-builds/src-noconflict/theme-dracula'
 import AWS from 'aws-sdk'
 import createPersistedState from 'use-persisted-state';
-const useloggedInState = createPersistedState('loggedIn');
 
 const ChallengeCode: React.FC = () => {
-	const auth = useSelector((state: Data) => state.data.auth)
+	const useloggedInState = createPersistedState('loggedIn');
+	const useIdTokenState = createPersistedState('idToken');
 	const selectedChallenge = useSelector(
 		(state: Data) => state.data.selectedChallenge
 	)
 	const [loggedIn, setLoggedIn] = useloggedInState(false)
+	const [idToken, setIdToken] = useIdTokenState('idToken')
 	const [show, setShow] = useState(false)
 	const [fileName, setFileName] = useState('')
 	const [inProgress, setInProgress] = useState(false)
@@ -85,7 +86,7 @@ const ChallengeCode: React.FC = () => {
 			Body: bodyResponse?.content,
 			Bucket: 'code-contest',
 			Key: `${selectedChallenge?.split(' ').join('_')}/${
-				auth.user.id
+				idToken['cognito:username']
 			}/response.py`
 		}
 		s3.putObject(params, function (err, data) {
@@ -99,7 +100,7 @@ const ChallengeCode: React.FC = () => {
 						'{ "Bucket": "code-contest", "Key": "' +
 						selectedChallenge?.split(' ').join('_') +
 						'/' +
-						auth.user.id +
+						idToken['cognito:username'] +
 						'/response.py" }'
 				}
 				lambda.invoke(params, function (err2, data2) {
@@ -119,7 +120,7 @@ const ChallengeCode: React.FC = () => {
 		var params = {
 			Bucket: 'code-contest',
 			Prefix: `${selectedChallenge?.split(' ').join('_')}/${
-				auth.user.id
+				idToken['cognito:username']
 			}/`
 		}
 		s3.listObjectsV2(params, function (err, data) {
@@ -145,21 +146,17 @@ const ChallengeCode: React.FC = () => {
 					}
 				})
 				if (!hasResponse) {
-					setBodyResponse({ content: '# Place your code here' })
+					setBodyResponse({ content: `def main():\n\t\t# Place your code here` })
 				}
 			}
 		})
 	}
 
 	useEffect(() => {
-		if (auth.user) uploadRepoCode()
+		if (idToken['cognito:username']) uploadRepoCode()
 		// eslint-disable-next-line
 	}, [selectedChallenge])
-
-	useEffect(() => {
-		console.log(loggedIn)
-	}, [loggedIn])
-
+	
 	return (
 		<Container>
 			{loggedIn ? (
@@ -234,7 +231,7 @@ const ChallengeCode: React.FC = () => {
 							<Modal
 								show={show}
 								onHide={handleClose}
-								backChallengeCode="static"
+								backdrop="static"
 							>
 								<Modal.Header closeButton>
 									<Modal.Title>
